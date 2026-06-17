@@ -11,8 +11,7 @@
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": true,
     "strict": true,
-    "jsx": "react-jsx",
-    "moduleDetection": "force",
+    "moduleDetection": "auto",
     "skipLibCheck": true,
     "esModuleInterop": true
   },
