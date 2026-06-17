@@ -15,9 +15,13 @@ No authentication — built as a single-user tool.
 ## Tech Stack
 
 **Frontend:** React + Vite, TypeScript
+
 **Backend:** Node.js, Express, TypeScript
+
 **Database:** PostgreSQL + Prisma
+
 **Validation:** Zod
+
 **Deployment:** Netlify (frontend), Railway (backend) — planned
 
 ## Project Structure
