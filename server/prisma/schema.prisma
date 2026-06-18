@@ -23,7 +23,7 @@ model Client {
 model Order {
   id         Int         @id @default(autoincrement())
   clientId   Int
-  date       DateTime
+  date       DateTime    @default(now())
   status     Status
   client     Client      @relation(fields: [clientId], references: [id])
   orderItems OrderItem[]
@@ -35,7 +35,7 @@ model OrderItem {
   orderId   Int
   serviceId Int
   quantity  Int
-  order     Order   @relation(fields: [orderId], references: [id])
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
   service   Service @relation(fields: [serviceId], references: [id])
 }
 
