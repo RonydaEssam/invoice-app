@@ -1,5 +1,4 @@
-import { optional, z } from 'zod';
-import { EnumInvoiseStatusFilter } from '../../generated/prisma/commonInputTypes';
+import { z } from 'zod';
 
 const createClientSchema = z.object({
     name: z.string().min(2),

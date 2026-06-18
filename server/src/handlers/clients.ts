@@ -24,7 +24,7 @@ const getClientById = async (req: Request, res: Response) => {
             return res.status(404).json({ error: 'client not found' })
         }
 
-        return res.send(client);
+        return res.json(client);
     } catch (error) {
         console.error('Error fetching clients:', error);
 
