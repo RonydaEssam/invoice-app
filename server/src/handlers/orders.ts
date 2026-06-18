@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { prisma } from '../database/prisma';
 import { Prisma } from '../../generated/prisma/client';
-import { createOrderSchema, updateOrderSchema } from '../schemas/orders.schema';
+import { createOrderSchema, updateOrderSchema } from '../schemas/order.schema';
 
 const getAllOrders = async (req: Request, res: Response) => {
     try {
