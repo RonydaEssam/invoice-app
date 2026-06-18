@@ -41,7 +41,7 @@ const createService = async (req: Request, res: Response) => {
     } catch (error) {
         console.error('Error creating service', error);
 
-        return res.status(500).json({ error: 'Failed to create service' })
+        return res.status(400).json({ error: 'Failed to create service' })
     }
 }
 
@@ -70,7 +70,7 @@ const deleteService = async (req: Request, res: Response) => {
 
         await prisma.service.delete({ where: { id } });
 
-        return res.status(200).json({ messgae: `service with id ${id} is deleted` });
+        return res.status(200).json({ message: `service with id ${id} is deleted` });
     } catch (error) {
         console.error('Error deleting service', error);
 
