@@ -1,5 +1,4 @@
 import { date, z } from 'zod';
-import { prisma } from '../database/prisma';
 
 const createOrderSchema = z.object({
     clientId: z.number(),
