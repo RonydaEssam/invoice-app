@@ -10,23 +10,27 @@ import AddOrderPage from "./pages/AddOrderPage";
 import OrderDetailsPage from "./pages/OrderDetailsPage";
 import InvoicesPage from "./pages/InvoicesPage";
 import InvoiceDetailsPage from "./pages/InvoiceDetailsPage";
+import Navbar from "./components/shared/Navbar";
 
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Homepage />} />
-        <Route path="/clients" element={<ClientsPage />} />
-        <Route path="/clients/new" element={<AddClientPage />} />
-        <Route path="/client/:id" element={<ClientDetailsPage />} />
-        <Route path="/services" element={<ServicesPage />} />
-        <Route path="/services/new" element={<AddServicePage />} />
-        <Route path="/orders" element={<OrdersPage />} />
-        <Route path="/orders/new" element={<AddOrderPage />} />
-        <Route path="/orders/:id" element={<OrderDetailsPage />} />
-        <Route path="/invoices" element={<InvoicesPage />} />
-        <Route path="/invoices/:id" element={<InvoiceDetailsPage />} />
-      </Routes>
+      <Navbar />
+      <div className="page">
+        <Routes>
+          <Route path="/" element={<Homepage />} />
+          <Route path="/clients" element={<ClientsPage />} />
+          <Route path="/clients/new" element={<AddClientPage />} />
+          <Route path="/client/:id" element={<ClientDetailsPage />} />
+          <Route path="/services" element={<ServicesPage />} />
+          <Route path="/services/new" element={<AddServicePage />} />
+          <Route path="/orders" element={<OrdersPage />} />
+          <Route path="/orders/new" element={<AddOrderPage />} />
+          <Route path="/orders/:id" element={<OrderDetailsPage />} />
+          <Route path="/invoices" element={<InvoicesPage />} />
+          <Route path="/invoices/:id" element={<InvoiceDetailsPage />} />
+        </Routes>
+      </div>
     </BrowserRouter>
   )
 }

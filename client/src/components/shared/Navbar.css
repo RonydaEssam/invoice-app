@@ -1,0 +1,73 @@
+.navbar {
+    background: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    height: 56px;
+}
+
+.navbar-brand {
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--color-text);
+    margin-right: 16px;
+}
+
+.navbar-link {
+    color: var(--color-text-muted);
+    font-size: 14px;
+    font-weight: 500;
+    padding: 6px 0;
+}
+
+.navbar-link:hover {
+    color: var(--color-text);
+}
+
+.theme-switch {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+}
+
+.theme-switch input {
+    position: absolute;
+    opacity: 0;
+    width: 44px;
+    height: 24px;
+    margin: 0;
+    cursor: pointer;
+}
+
+.theme-switch-track {
+    width: 44px;
+    height: 24px;
+    background: var(--color-border);
+    border-radius: 999px;
+    position: relative;
+    transition: background-color 0.2s ease;
+}
+
+.theme-switch input:checked+.theme-switch-track {
+    background: var(--color-border);
+}
+
+.theme-switch-thumb {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 20px;
+    height: 20px;
+    background: var(--color-surface);
+    border-radius: 50%;
+    box-shadow: var(--shadow);
+    transition: transform 0.2s ease;
+}
+
+.theme-switch input:checked+.theme-switch-track .theme-switch-thumb {
+    transform: translateX(20px);
+}
