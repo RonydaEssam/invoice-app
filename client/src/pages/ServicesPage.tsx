@@ -21,7 +21,7 @@ function ServicesPage() {
     return (
         <div>
             <div className="list-header">
-                <h1>Services Page</h1>
+                <h1>Services</h1>
                 <Link to='services/new' className="btn-primary">+ Add Service</Link>
             </div>
 
