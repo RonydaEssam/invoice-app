@@ -3,7 +3,7 @@ import Homepage from "./pages/Homepage";
 import ClientsPage from "./pages/ClientsPage";
 import AddClientPage from "./pages/AddClientPage";
 import ClientDetailsPage from "./pages/ClientDetailsPage";
-import ServicesPage from "./pages/ServicePage";
+import ServicesPage from "./pages/ServicesPage";
 import AddServicePage from "./pages/AddServicePage";
 import OrdersPage from "./pages/OrdersPage";
 import AddOrderPage from "./pages/AddOrderPage";
