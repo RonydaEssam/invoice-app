@@ -16,10 +16,10 @@ const appName = String(process.env.APP_NAME);
 app.use(corsMiddleware);
 app.use(express.json());
 
-app.use('/client', clientRouter);
-app.use('/service', serviceRouter);
-app.use('/order', orderRouter);
-app.use('/invoice', invoiceRouter);
+app.use('/clients', clientRouter);
+app.use('/services', serviceRouter);
+app.use('/orders', orderRouter);
+app.use('/invoices', invoiceRouter);
 
 app.use(errorHandler);
 
