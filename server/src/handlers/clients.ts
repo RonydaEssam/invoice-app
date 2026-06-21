@@ -74,6 +74,11 @@ const deleteClient = async (req: Request, res: Response) => {
             return res.status(404).json({ error: 'client not found' });
         }
 
+        const order = await prisma.order.findFirst({ where: { clientId: id } });
+        if (order) {
+            return res.status(409).json({ error: 'can not delete client with existing order' });
+        }
+
         await prisma.client.delete({ where: { id } });
 
         return res.status(200).json({ message: `client with id ${id} is deleted` });
