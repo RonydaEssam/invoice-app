@@ -1,15 +1,39 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FormInput } from '../components/shared/FormInput';
 import '../components/shared/FormInput.css';
+import { useNavigate, useParams } from 'react-router-dom';
+import { submitData } from '../api/transformData';
 
 function AddClientPage() {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [address, setAddress] = useState('');
 
+    const navigate = useNavigate();
+    const data = { name, email, address };
+
+    const { id } = useParams();
+
+    const handleSave = () => {
+        submitData('clients', id ? 'PUT' : 'POST', data, id ? Number(id) : undefined)
+            .then(() => navigate('/clients'))
+    }
+
+    useEffect(() => {
+        if (!id) return;
+
+        fetch(`http://localhost:3000/clients/${Number(id)}`)
+            .then(response => response.json())
+            .then(data => {
+                setName(data.name);
+                setEmail(data.email);
+                setAddress(data.address);
+            })
+    }, [id])
+
     return (
         <div>
-            <h1>Add Client Page</h1>
+            {id ? <h1>Edit Client</h1> : <h1>Add Client</h1>}
 
             <FormInput
                 label='Name'
@@ -36,7 +60,7 @@ function AddClientPage() {
             />
 
             <div className='form-actions'>
-                <button className='btn-primary' onClick={() => console.log(`name: ${name}, email: ${email}, address: ${address}`)}>
+                <button className='btn-primary' onClick={handleSave}>
                     Save Client
                 </button>
             </div>

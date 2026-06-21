@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import '../components/shared/styles/ListPage.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { deleteData } from '../api/transformData';
 
 interface Client {
     id: number
@@ -11,12 +12,19 @@ interface Client {
 
 function ClientsPage() {
     const [clients, setClients] = useState<Client[]>([])
+    const navigate = useNavigate();
 
     useEffect(() => {
         fetch('http://localhost:3000/clients')
             .then(response => response.json())
             .then(data => setClients(data))
     }, [])
+
+    function deleteClient(id: number) {
+        deleteData('clients', id)
+            .then(() => setClients(clients.filter(client => client.id !== id)))
+            .catch(error => alert(error.message))
+    }
 
     return (
         <div>
@@ -32,12 +40,13 @@ function ClientsPage() {
                             <p className='card-title'>{client.name}</p>
                             <p className='card-subtitle'>{client.email} . {client.address}</p>
                         </div>
+                        <button onClick={() => deleteClient(client.id)}>delete</button>
+                        <button onClick={() => navigate(`edit/${client.id}`)}>edit</button>
                     </div>
                 ))}
             </div>
         </div>
     )
 }
-
 
 export default ClientsPage;
