@@ -21,11 +21,14 @@ function App() {
           <Route path="/" element={<Homepage />} />
           <Route path="/clients" element={<ClientsPage />} />
           <Route path="/clients/new" element={<AddClientPage />} />
+          <Route path="/clients/edit/:id" element={<AddClientPage />} />
           <Route path="/clients/:id" element={<ClientDetailsPage />} />
           <Route path="/services" element={<ServicesPage />} />
           <Route path="/services/new" element={<AddServicePage />} />
+          <Route path="/services/edit/:id" element={<AddServicePage />} />
           <Route path="/orders" element={<OrdersPage />} />
           <Route path="/orders/new" element={<AddOrderPage />} />
+          <Route path="/orders/edit/:id" element={<AddOrderPage />} />
           <Route path="/orders/:id" element={<OrderDetailsPage />} />
           <Route path="/invoices" element={<InvoicesPage />} />
           <Route path="/invoices/:id" element={<InvoiceDetailsPage />} />
