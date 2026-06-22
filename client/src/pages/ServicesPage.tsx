@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import '../components/shared/styles/ListPage.css';
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { deleteData } from "../api/transformData";
 
 interface Service {
