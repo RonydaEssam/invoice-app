@@ -5,7 +5,14 @@ import { createOrderSchema, updateOrderSchema } from '../schemas/order.schema';
 
 const getAllOrders = async (req: Request, res: Response) => {
     try {
-        const orders = await prisma.order.findMany({ include: { orderItems: true } });
+        const orders = await prisma.order.findMany({
+            include: {
+                client: true,
+                orderItems: {
+                    include: { service: true }
+                }
+            }
+        });
 
         return res.status(200).json(orders);
     } catch (error) {
@@ -18,7 +25,15 @@ const getAllOrders = async (req: Request, res: Response) => {
 const getOrderById = async (req: Request, res: Response) => {
     try {
         const id = Number(req.params.id);
-        const order = await prisma.order.findUnique({ where: { id }, include: { orderItems: true } });
+        const order = await prisma.order.findUnique({
+            where: { id },
+            include: {
+                client: true,
+                orderItems: {
+                    include: { service: true }
+                }
+            }
+        });
 
         if (!order) {
             return res.status(404).json({ error: 'order not found' });
