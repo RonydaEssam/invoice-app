@@ -1,25 +1,7 @@
 import { useEffect, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { deleteData } from "../api/transformData"
-
-interface Order {
-    id: number
-    clientId: number
-    client: {
-        name: string
-    }
-    date: Date
-    status: string
-    orderItems: {
-        serviceId: number
-        quantity: number
-        service: {
-            name: string
-            price: number
-        }
-    }[]
-
-}
+import type Order from '../types/types';
 
 function OrdersPage() {
     const [orders, setOrders] = useState<Order[]>([]);

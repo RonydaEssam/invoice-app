@@ -2,13 +2,7 @@ import { useState, useEffect } from 'react';
 import '../components/shared/styles/ListPage.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { deleteData } from '../api/transformData';
-
-interface Client {
-    id: number
-    name: string
-    email: string
-    address: string
-}
+import type Client from '../types/types';
 
 function ClientsPage() {
     const [clients, setClients] = useState<Client[]>([])
