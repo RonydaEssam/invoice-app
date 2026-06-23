@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import '../components/shared/styles/ListPage.css';
 import { Link, useNavigate } from "react-router-dom";
 import { deleteData } from "../api/transformData";
-import type Service from '../types/types';
+import type { Service } from '../types/types';
 
 function ServicesPage() {
     const [services, setServices] = useState<Service[]>([]);

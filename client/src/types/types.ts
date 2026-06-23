@@ -1,18 +1,18 @@
-export default interface Client {
+export interface Client {
     id: number
     name: string
     email: string
     address: string
 }
 
-export default interface Service {
+export interface Service {
     id: number
     name: string
     description: string
     price: number
 }
 
-export default interface Order {
+export interface Order {
     id: number
     clientId: number
     client: {
