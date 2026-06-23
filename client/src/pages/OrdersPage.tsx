@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { deleteData } from "../api/transformData"
-import type Order from '../types/types';
+import type { Order } from '../types/types';
 
 function OrdersPage() {
     const [orders, setOrders] = useState<Order[]>([]);
