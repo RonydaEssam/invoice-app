@@ -12,6 +12,15 @@ export interface Service {
     price: number
 }
 
+export interface OrderItem {
+    serviceId: number
+    quantity: number
+    service: {
+        name: string
+        price: number
+    }
+}
+
 export interface Order {
     id: number
     clientId: number
@@ -20,13 +29,17 @@ export interface Order {
     }
     date: Date
     status: string
-    orderItems: {
-        serviceId: number
-        quantity: number
-        service: {
-            name: string
-            price: number
-        }
-    }[]
+    orderItems: OrderItem[]
 
+}
+
+export interface Invoice {
+    id: number
+    orderId: number
+    status: 'Draft' | 'Sent' | 'Paid'
+    totalPrice: number
+    order: {
+        client: Client
+        orderItems: OrderItem[]
+    }
 }
