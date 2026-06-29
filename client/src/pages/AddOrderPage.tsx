@@ -18,6 +18,7 @@ function AddOrderPage() {
     const [orderItems, setOrderItems] = useState<OrderItemInput[]>([]);
     const [currentServiceId, setCurrentServiceId] = useState(0);
     const [currentQuantity, setCurrentQuantity] = useState(1);
+    const [orderStatus, setOrderStatus] = useState('Open');
 
     const navigate = useNavigate();
 
@@ -32,6 +33,20 @@ function AddOrderPage() {
             .then(response => response.json())
             .then(data => setServices(data))
     }, [])
+
+    useEffect(() => {
+        if (!id) return;
+
+        fetch(`http://localhost:3000/orders/${Number(id)}`)
+            .then(response => response.json())
+            .then(data => {
+                setSelectedClientId(data.clientId)
+                setOrderItems(data.orderItems)
+                setOrderStatus(data.status)
+            })
+    }
+        , [id]
+    )
 
     function addOrderItem() {
         setOrderItems([...orderItems, { serviceId: currentServiceId, quantity: currentQuantity }])
@@ -54,7 +69,8 @@ function AddOrderPage() {
 
         const data = {
             clientId: selectedClientId,
-            orderItems: orderItems
+            orderItems: orderItems,
+            status: orderStatus
         }
 
         submitData("orders", id ? "PUT" : "POST", data, id ? Number(id) : undefined)
@@ -81,7 +97,7 @@ function AddOrderPage() {
                     const service = services.find(s => s.id === item.serviceId)
                     return (
                         <li key={index}>
-                            {service?.name} × {item.quantity}
+                            {service?.name} * {item.quantity}
                             <button onClick={() => removeOrderItem(index)}>Remove</button>
                         </li>
                     )
@@ -107,6 +123,13 @@ function AddOrderPage() {
                 </select>
 
                 <button onClick={addOrderItem}>Add service</button>
+            </div>
+
+            <div>
+                <select value={orderStatus} onChange={(e) => setOrderStatus(e.target.value)}>
+                    <option>Open</option>
+                    {id ? <option>Closed</option> : null}
+                </select>
             </div>
 
             <button onClick={saveOrder}>Save Order</button>
