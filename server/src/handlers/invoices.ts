@@ -9,7 +9,9 @@ const getAllInvoices = async (req: Request, res: Response) => {
                 order: {
                     include: {
                         client: true,
-                        orderItems: true
+                        orderItems: {
+                            include: { service: true }
+                        }
                     }
                 }
             }
@@ -32,7 +34,9 @@ const getInvoiceById = async (req: Request, res: Response) => {
                 order: {
                     include: {
                         client: true,
-                        orderItems: true
+                        orderItems: {
+                            include: { service: true }
+                        }
                     }
                 }
             }
