@@ -4,7 +4,16 @@ import { createInvoiceSchema, updateInvoiceSchema } from "../schemas/invoice.sch
 
 const getAllInvoices = async (req: Request, res: Response) => {
     try {
-        const invoices = await prisma.invoice.findMany();
+        const invoices = await prisma.invoice.findMany({
+            include: {
+                order: {
+                    include: {
+                        client: true,
+                        orderItems: true
+                    }
+                }
+            }
+        });
 
         return res.status(200).json(invoices);
     } catch (error) {
@@ -19,7 +28,14 @@ const getInvoiceById = async (req: Request, res: Response) => {
         const id = Number(req.params.id);
         const invoice = await prisma.invoice.findUnique({
             where: { id },
-            include: { order: { include: { orderItems: true } } }
+            include: {
+                order: {
+                    include: {
+                        client: true,
+                        orderItems: true
+                    }
+                }
+            }
         });
 
         if (!invoice) {
