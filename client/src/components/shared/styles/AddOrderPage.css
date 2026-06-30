@@ -1,0 +1,50 @@
+.btn-secondary {
+    background: transparent;
+    color: var(--color-text-muted);
+    border: 1px solid var(--color-border);
+    padding: 6px 12px;
+    border-radius: var(--radius);
+    font-size: 13px;
+}
+
+.btn-secondary:hover {
+    border-color: var(--color-danger);
+    color: var(--color-danger);
+}
+
+.order-items-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 20px;
+    max-width: 420px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.order-item-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: 10px 14px;
+    font-size: 14px;
+}
+
+.add-item-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.add-item-row .form-field {
+    margin-bottom: 0;
+}
+
+.status-field {
+    max-width: 200px;
+    margin-bottom: 20px;
+}

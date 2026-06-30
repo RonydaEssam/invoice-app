@@ -34,8 +34,11 @@ function ClientsPage() {
                             <p className='card-title'>{client.name}</p>
                             <p className='card-subtitle'>{client.email} . {client.address}</p>
                         </div>
-                        <button onClick={() => deleteClient(client.id)}>delete</button>
-                        <button onClick={() => navigate(`edit/${client.id}`)}>edit</button>
+
+                        <div className='card-actions'>
+                            <button className='btn-edit' onClick={() => navigate(`edit/${client.id}`)}>edit</button>
+                            <button className='btn-delete' onClick={() => deleteClient(client.id)}>delete</button>
+                        </div>
                     </div>
                 ))}
             </div>

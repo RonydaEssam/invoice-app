@@ -54,3 +54,43 @@
     margin: 0;
     font-style: italic;
 }
+
+.card-actions {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.btn-edit,
+.btn-delete {
+    background: transparent;
+    color: var(--color-text-muted);
+    border: 1px solid var(--color-border);
+    padding: 6px 14px;
+    border-radius: var(--radius);
+    font-size: 13px;
+}
+
+.btn-edit:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+}
+
+.btn-delete:hover {
+    border-color: var(--color-danger);
+    color: var(--color-danger);
+}
+
+.status-select {
+    font-family: inherit;
+    font-size: 13px;
+    padding: 4px 8px;
+    border: 1px solid var(--color-accent);
+    border-radius: 6px;
+    background: var(--color-surface);
+    color: var(--color-text);
+}
+
+.status-select:focus {
+    outline: none;
+}

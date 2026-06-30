@@ -37,8 +37,10 @@ function ServicesPage() {
                                 <p className="card-description">{service.description}</p>
                             </div>
 
-                            <button onClick={() => deleteService(service.id)}>delete</button>
-                            <button onClick={() => navigate(`edit/${service.id}`)}>edit</button>
+                            <div className="card-actions">
+                                <button className="btn-edit" onClick={() => navigate(`edit/${service.id}`)}>edit</button>
+                                <button className="btn-delete" onClick={() => deleteService(service.id)}>delete</button>
+                            </div>
                         </div>
                     ))
                 }

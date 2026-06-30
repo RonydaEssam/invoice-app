@@ -36,8 +36,11 @@ function OrdersPage() {
                                 <p>Status: {order.status}</p>
                             </div>
 
-                            <button onClick={() => deleteOrder(order.id)}>delete</button>
-                            <button onClick={() => navigate(`edit/${order.id}`)}>edit</button>
+                            <div className="card-actions">
+                                <button className="btn-edit" onClick={() => navigate(`edit/${order.id}`)}>edit</button>
+                                <button className="btn-delete" onClick={() => deleteOrder(order.id)}>delete</button>
+
+                            </div>
                         </div>
                     ))
                 }

@@ -29,19 +29,19 @@ function InvoicesPage() {
 
     return (
         <div>
-            <h1>Invoices Page</h1>
+            <h1>Invoices</h1>
 
             <div className="card-list">
                 {invoices.map(invoice => (
                     <div className="card" key={invoice.id}>
                         <div>
                             <p className="card-title">Invoice #{invoice.id} - {invoice.order.client.name}</p>
-                            <p className="card-subtitle">Total: ${invoice.totalPrice}</p>
 
                             {editingInvoiceId === invoice.id ? (
                                 <>
                                     <span>Status: </span>
                                     <select
+                                        className="status-select"
                                         value={invoice.status}
                                         onChange={(e) => {
                                             updateInvoiceStatus(invoice.id, e.target.value as "Draft" | "Sent" | "Paid")
@@ -56,16 +56,19 @@ function InvoicesPage() {
                                 <span>Status: {invoice.status}</span>
                             )}
 
+                            <p className="card-subtitle">Total: ${invoice.totalPrice}</p>
                             <p className="card-description">
-                                {invoice.order.orderItems
+                                Details: {invoice.order.orderItems
                                     .map(item => `${item.service.name} * ${item.quantity}`)
                                     .join(', ')
                                 }
                             </p>
-
                         </div>
-                        <button onClick={() => deleteInvoice(invoice.id)}>delete</button>
-                        <button onClick={() => setEditingInvoiceId(invoice.id)}>edit</button>
+
+                        <div className="card-actions">
+                            <button className="btn-edit" onClick={() => setEditingInvoiceId(invoice.id)}>edit</button>
+                            <button className="btn-delete" onClick={() => deleteInvoice(invoice.id)}>delete</button>
+                        </div>
                     </div>
                 ))}
             </div>

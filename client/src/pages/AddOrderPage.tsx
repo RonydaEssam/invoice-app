@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom"
 import type { Client, Service } from "../types/types";
 import { submitData } from "../api/transformData";
 import { FormInput } from "../components/shared/FormInput";
+import '../../src/components/shared/styles/AddOrderPage.css'
 
 interface OrderItemInput {
     serviceId: number
@@ -81,8 +82,9 @@ function AddOrderPage() {
         <div>
             {id ? <h1>Edit Order</h1> : <h1>Add Order</h1>}
 
-            <div>
-                <select value={selectedClientId} onChange={(e) => setSelectedClientId(Number(e.target.value))}>
+            <div className="form-field">
+                <label htmlFor="client">Client</label>
+                <select id="client" value={selectedClientId} onChange={(e) => setSelectedClientId(Number(e.target.value))}>
                     <option value=''>Select a client</option>
                     {clients.map(client => (
                         <option key={client.id} value={client.id}>
@@ -92,19 +94,19 @@ function AddOrderPage() {
                 </select>
             </div>
 
-            <ul>
+            <ul className="order-items-list">
                 {orderItems.map((item, index) => {
                     const service = services.find(s => s.id === item.serviceId)
                     return (
-                        <li key={index}>
+                        <li className="order-item-row" key={index}>
                             {service?.name} * {item.quantity}
-                            <button onClick={() => removeOrderItem(index)}>Remove</button>
+                            <button className="btn-secondary" onClick={() => removeOrderItem(index)}>Remove</button>
                         </li>
                     )
                 })}
             </ul>
 
-            <div>
+            <div className="add-item-row">
                 <FormInput
                     label="Quantity"
                     name='quantity'
@@ -113,26 +115,33 @@ function AddOrderPage() {
                     onChange={(e) => setCurrentQuantity(Number(e.target.value))}
                 />
 
-                <select value={currentServiceId} onChange={(e) => setCurrentServiceId(Number(e.target.value))}>
-                    <option value=''>Add service</option>
-                    {services.map(service => (
-                        <option key={service.id} value={service.id}>
-                            {service.name}
-                        </option>
-                    ))}
-                </select>
+                <div className="form-field">
+                    <label htmlFor="service">Service</label>
+                    <select id="service" value={currentServiceId} onChange={(e) => setCurrentServiceId(Number(e.target.value))}>
+                        <option value=''>Add service</option>
+                        {services.map(service => (
+                            <option key={service.id} value={service.id}>
+                                {service.name}
+                            </option>
+                        ))}
+                    </select>
+                </div>
 
-                <button onClick={addOrderItem}>Add service</button>
+                <button className="btn-primary" onClick={addOrderItem}>Add service</button>
             </div>
 
-            <div>
-                <select value={orderStatus} onChange={(e) => setOrderStatus(e.target.value)}>
+            <div className="form-field status-field">
+                <label htmlFor="status">Status</label>
+                <select id="status" value={orderStatus} onChange={(e) => setOrderStatus(e.target.value)}>
                     <option>Open</option>
                     {id ? <option>Closed</option> : null}
                 </select>
             </div>
 
-            <button onClick={saveOrder}>Save Order</button>
+            <div className="form-actions">
+                <button className="btn-primary" onClick={saveOrder}>Save Order</button>
+            </div>
+
         </div>
     )
 }
