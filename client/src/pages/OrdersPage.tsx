@@ -37,10 +37,11 @@ function OrdersPage() {
                             </div>
 
                             <div className="card-actions">
+                                <Link to={`/orders/${order.id}`} className="btn-edit">View details</Link>
                                 <button className="btn-edit" onClick={() => navigate(`edit/${order.id}`)}>edit</button>
                                 <button className="btn-delete" onClick={() => deleteOrder(order.id)}>delete</button>
-
                             </div>
+
                         </div>
                     ))
                 }

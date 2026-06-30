@@ -15,22 +15,17 @@ export interface Service {
 export interface OrderItem {
     serviceId: number
     quantity: number
-    service: {
-        name: string
-        price: number
-    }
+    service: Service
 }
 
 export interface Order {
     id: number
     clientId: number
-    client: {
-        name: string
-    }
-    date: Date
+    client: Client
+    date: string
     status: string
     orderItems: OrderItem[]
-
+    invoice?: Invoice | null
 }
 
 export interface Invoice {
@@ -38,6 +33,7 @@ export interface Invoice {
     orderId: number
     status: 'Draft' | 'Sent' | 'Paid'
     totalPrice: number
+    createdAt: string
     order: {
         client: Client
         orderItems: OrderItem[]

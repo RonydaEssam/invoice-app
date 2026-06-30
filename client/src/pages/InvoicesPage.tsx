@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import type { Invoice } from "../types/types";
 import { deleteData, submitData } from "../api/transformData";
+import { Link } from "react-router-dom";
 
 function InvoicesPage() {
     const [invoices, setInvoices] = useState<Invoice[]>([]);
@@ -29,7 +30,10 @@ function InvoicesPage() {
 
     return (
         <div>
-            <h1>Invoices</h1>
+            <div className='list-header'>
+                <h1>Invoices</h1>
+                <Link to='/orders' className='btn-primary'>+ Add Invoice</Link>
+            </div>
 
             <div className="card-list">
                 {invoices.map(invoice => (
