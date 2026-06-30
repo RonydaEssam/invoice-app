@@ -29,6 +29,7 @@ const getOrderById = async (req: Request, res: Response) => {
             where: { id },
             include: {
                 client: true,
+                invoice: true,
                 orderItems: {
                     include: { service: true }
                 }
