@@ -36,6 +36,7 @@ function ClientsPage() {
                         </div>
 
                         <div className='card-actions'>
+                            <Link to={`/clients/${client.id}`} className='btn-edit'>View details</Link>
                             <button className='btn-edit' onClick={() => navigate(`edit/${client.id}`)}>edit</button>
                             <button className='btn-delete' onClick={() => deleteClient(client.id)}>delete</button>
                         </div>
