@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom"
+import { Link, useNavigate, useParams } from "react-router-dom"
 import type { Invoice, Order } from "../types/types";
 import '../components/shared/styles/ListPage.css';
-import { submitData } from "../api/transformData";
+import { deleteData, submitData } from "../api/transformData";
 
 function OrderDetailsPage() {
     const { id } = useParams();
@@ -11,6 +11,7 @@ function OrderDetailsPage() {
 
     const orderDate = order?.date ? new Date(order.date).toLocaleDateString() : "";
     const InvoiceDate = order?.invoice?.createdAt ? new Date(order.invoice.createdAt).toLocaleDateString() : "";
+    const navigate = useNavigate();
 
     const totalPrice = order?.orderItems.reduce(
         (sum, item) => sum + (item.service.price * item.quantity), 0
@@ -27,13 +28,22 @@ function OrderDetailsPage() {
             .then(data => setInvoice(data.invoice))
     }
 
+    function deleteOrder() {
+        deleteData("orders", Number(id))
+            .then(() => navigate('/orders'))
+            .catch(error => alert(error.message))
+    }
+
     return (
         <div>
             <div className="list-header">
                 <h1>Order Details</h1>
-                <Link to={`/orders/edit/${Number(id)}`} className="btn-primary">Edit Order</Link>
-            </div>
 
+                <div className="card-actions">
+                    <Link to={`/orders/edit/${Number(id)}`} className="btn-edit">Edit Order</Link>
+                    <button onClick={deleteOrder} className="btn-delete">delete</button>
+                </div>
+            </div>
 
             <div>
                 <div>
