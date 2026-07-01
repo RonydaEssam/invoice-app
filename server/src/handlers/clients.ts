@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { prisma } from "../database/prisma";
 import { createClientSchema, updateClientSchema } from "../schemas/client.schema";
 import { Prisma } from "../../generated/prisma/client";
+import { tr } from "zod/locales";
 
 const getAllClients = async (req: Request, res: Response) => {
     try {
@@ -18,7 +19,19 @@ const getAllClients = async (req: Request, res: Response) => {
 const getClientById = async (req: Request, res: Response) => {
     try {
         const id = Number(req.params.id);
-        const client = await prisma.client.findUnique({ where: { id } })
+        const client = await prisma.client.findUnique({
+            where: { id },
+            include: {
+                order: {
+                    include: {
+                        orderItems: {
+                            include: { service: true }
+                        },
+                        invoice: true
+                    }
+                },
+            }
+        })
 
         if (!client) {
             return res.status(404).json({ error: 'client not found' })
