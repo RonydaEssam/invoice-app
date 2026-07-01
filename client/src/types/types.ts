@@ -35,8 +35,5 @@ export interface Invoice {
     status: 'Draft' | 'Sent' | 'Paid'
     totalPrice: number
     createdAt: string
-    order: {
-        client: Client
-        orderItems: OrderItem[]
-    }
+    order: Order
 }

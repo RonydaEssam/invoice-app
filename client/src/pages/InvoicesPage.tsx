@@ -70,6 +70,7 @@ function InvoicesPage() {
                         </div>
 
                         <div className="card-actions">
+                            <Link to={`/invoices/${invoice.id}`} className="btn-edit">View details</Link>
                             <button className="btn-edit" onClick={() => setEditingInvoiceId(invoice.id)}>edit</button>
                             <button className="btn-delete" onClick={() => deleteInvoice(invoice.id)}>delete</button>
                         </div>
