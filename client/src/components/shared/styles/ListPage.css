@@ -94,3 +94,10 @@
 .status-select:focus {
     outline: none;
 }
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    align-items: start;
+}
