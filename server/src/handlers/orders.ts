@@ -1,11 +1,14 @@
 import { Request, Response } from 'express';
 import { prisma } from '../database/prisma';
-import { Prisma } from '../../generated/prisma/client';
+import { Prisma, Status } from '../../generated/prisma/client';
 import { createOrderSchema, updateOrderSchema } from '../schemas/order.schema';
 
 const getAllOrders = async (req: Request, res: Response) => {
     try {
+        const { status } = req.query;
+
         const orders = await prisma.order.findMany({
+            where: status ? { status: status as Status } : {},
             include: {
                 client: true,
                 orderItems: {

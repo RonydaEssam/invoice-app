@@ -1,10 +1,14 @@
 import { Request, Response } from "express";
 import { prisma } from "../database/prisma";
 import { createInvoiceSchema, updateInvoiceSchema } from "../schemas/invoice.schema";
+import { InvoiseStatus } from "../../generated/prisma/enums";
 
 const getAllInvoices = async (req: Request, res: Response) => {
     try {
+        const { status } = req.query;
+
         const invoices = await prisma.invoice.findMany({
+            where: status ? { status: status as InvoiseStatus } : {},
             include: {
                 order: {
                     include: {
