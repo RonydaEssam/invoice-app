@@ -1,5 +1,5 @@
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { deleteData, submitData } from '../api/transformData';
+import { deleteData } from '../api/transformData';
 import { useEffect, useState } from 'react';
 import type { Invoice } from '../types/types';
 import '../components/shared/styles/ListPage.css';
