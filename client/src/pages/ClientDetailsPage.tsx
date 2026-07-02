@@ -1,8 +1,9 @@
 import { Link, useNavigate, useParams } from "react-router-dom"
-import '../components/shared/styles/ListPage.css';
 import { useEffect, useState } from "react";
 import type { Client } from "../types/types";
 import { deleteData } from "../api/transformData";
+import '../components/shared/styles/ListPage.css';
+import '../components/shared/styles/DetailsPage.css';
 
 function ClientDetailsPage() {
     const { id } = useParams();
@@ -31,34 +32,71 @@ function ClientDetailsPage() {
                 </div>
             </div>
 
-            <div>
-                <div key={client?.id}>
-                    Client data:
-                    <p>name: {client?.name}</p>
-                    <p>email: {client?.email}</p>
-                    <p>address: {client?.address}</p>
+            <div className="details-section">
+                <p className="details-section-title">Client</p>
+
+                <div className="details-row">
+                    <span className="details-label">Id</span>
+                    <span className="details-value"> {client?.id}</span>
                 </div>
 
-                <div>
-                    Orders:
-                    {client?.order ? (
-                        client.order.map(order => (
-                            <div key={order.id} className="card">
-                                <p>Created on : {new Date(order.date).toLocaleDateString()}</p>
-                                <p>Status: {order.status}</p>
-                                <div>
-                                    {order.orderItems.map(item => (
-                                        <p key={item.serviceId}>{item.service.name} * {item.quantity}</p>
-                                    ))}
-                                </div>
-                                <p>Invoice: {order.invoice ? order.invoice.status : 'no invoice'}</p>
-                            </div>
-                        ))
-                    ) : <p>Client has no Orders.</p>}
+                <div className="details-row">
+                    <span className="details-label">Name</span>
+                    <span className="details-value"> {client?.name}</span>
+                </div>
+
+                <div className="details-row">
+                    <span className="details-label">Email</span>
+                    <span className="details-value">{client?.email}</span>
+                </div>
+
+                <div className="details-row">
+                    <span className="details-label">Address</span>
+                    <span className="details-value">{client?.address}</span>
                 </div>
             </div>
 
-        </div>
+            <div className="details-section">
+                <p className="details-section-title">Orders</p>
+
+                {client?.order && client.order.length > 0 ? (
+                    client.order.map(order => (
+                        <div key={order.id}>
+                            <div className="details-row">
+                                <span className="details-label">Order no.</span>
+                                <span className="details-value">#{order.id}</span>
+                            </div>
+
+                            <div className="details-row">
+                                <span className="details-label">Date</span>
+                                <span className="details-value">{new Date(order.date).toLocaleDateString()}</span>
+                            </div>
+
+                            <div className="details-row">
+                                <span className="details-label">Status</span>
+                                <span className={`status-badge ${order?.status.toLowerCase()}`}>{order?.status}</span>
+                            </div>
+
+                            <div className="details-row">
+                                <span className="details-label">Invoice</span>
+                                <span className="details-value">{order.invoice ? order.invoice.status : '--'}</span>
+                            </div>
+
+                            <div className="line-items">
+                                {order.orderItems.map(item => (
+                                    <div className="line-item" key={item.serviceId}>
+                                        <span className="line-item-name">{item.service.name}</span>
+                                        <span className="line-item-meta">${item.service.price} * {item.quantity}</span>
+                                        <span className="details-value">${item.service.price * item.quantity}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    ))
+                ) : <p className="empty-state">Client has no orders yet.</p>}
+            </div>
+
+        </div >
     )
 
 }

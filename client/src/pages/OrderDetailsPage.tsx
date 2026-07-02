@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom"
 import type { Invoice, Order } from "../types/types";
-import '../components/shared/styles/ListPage.css';
 import { deleteData, submitData } from "../api/transformData";
+import '../components/shared/styles/ListPage.css';
+import '../components/shared/styles/DetailsPage.css';
 
 function OrderDetailsPage() {
     const { id } = useParams();
@@ -38,46 +39,89 @@ function OrderDetailsPage() {
         <div>
             <div className="list-header">
                 <h1>Order Details</h1>
-
                 <div className="card-actions">
                     <Link to={`/orders/edit/${Number(id)}`} className="btn-edit">Edit Order</Link>
                     <button onClick={deleteOrder} className="btn-delete">delete</button>
                 </div>
             </div>
 
-            <div>
-                <div>
-                    Client details:
-                    <p>name: {order?.client.name}</p>
-                    <p>email: {order?.client.email}</p>
-                    <p>address: {order?.client.address}</p>
+            <div className="details-section">
+                <p className="details-section-title">Client</p>
+
+                <div className="details-row">
+                    <span className="details-label">Name</span>
+                    <span className="details-value">{order?.client.name}</span>
                 </div>
 
-                <p>Order created on: {orderDate}</p>
+                <div className="details-row">
+                    <span className="details-label">Email</span>
+                    <span className="details-value">{order?.client.email}</span>
+                </div>
 
-                <p>Order status: {order?.status}</p>
+                <div className="details-row">
+                    <span className="details-label">Address</span>
+                    <span className="details-value">{order?.client.address}</span>
+                </div>
+            </div>
 
-                {order?.orderItems.map(item =>
-                    <p key={item.service.id}>
-                        {item.service.name} : ${item.service.price} * {item.quantity} = ${item.service.price * item.quantity}
-                    </p>
-                )}
+            <div className="details-section">
+                <p className="details-section-title">Order</p>
 
-                <p>Total price: {totalPrice}</p>
+                <div className="details-row">
+                    <span className="details-label">Id</span>
+                    <span className="details-value">{order?.id}</span>
+                </div>
 
-                <div>
-                    <p>Invoice: </p>
-                    {order?.invoice ? (
-                        <div>
-                            <p>Created on: {InvoiceDate}</p>
-                            <p>Status: {order.invoice.status}</p>
+                <div className="details-row">
+                    <span className="details-label">Date</span>
+                    <span className="details-value">{orderDate}</span>
+                </div>
 
-                            <Link to={`/invoices/${order?.invoice?.id}`}>Invoice details</Link>
+                <div className="details-row">
+                    <span className="details-label">Status</span>
+                    <span className={`status-badge ${order?.status.toLowerCase()}`}>{order?.status}</span>
+                </div>
+
+                <div className="line-items">
+                    {order?.orderItems.map(item =>
+                        <div className="line-item" key={item.serviceId}>
+                            <span className="line-item-name">{item.service.name}</span>
+                            <span className="line-item-name">{item.service.description}</span>
+                            <span className="line-item-meta">${item.service.price} * {item.quantity}</span>
+                            <span className="details-value">${item.service.price * item.quantity}</span>
                         </div>
-                    ) : (
-                        <button className="btn-primary" onClick={createInvoice}>Create Invoice</button>
                     )}
                 </div>
+
+                <div className="details-total">
+                    <span>Total</span>
+                    <span>${totalPrice}</span>
+                </div>
+            </div>
+
+            <div className="details-section">
+                <p className="details-section-title">Invoice</p>
+
+                {order?.invoice ? (
+                    <>
+                        <div className="details-row">
+                            <span className="details-label">Created</span>
+                            <span className="details-value">{InvoiceDate}</span>
+                        </div>
+
+                        <div className="details-row">
+                            <span className="details-label">Status</span>
+                            <span className={`status-badge ${order.invoice.status.toLowerCase()}`}>{order.invoice.status}</span>
+                        </div>
+
+                        <Link to={`/invoices/${order?.invoice?.id}`}>Invoice details</Link>
+                    </>
+                ) : (
+                    <div>
+                        <p style={{ color: 'var(--color-text-muted)', fontSize: '14px', marginBottom: '12px' }}>No invoice generated yet.</p>
+                        <button className="btn-primary" onClick={createInvoice}>Create Invoice</button>
+                    </div>
+                )}
             </div>
         </div>
     )

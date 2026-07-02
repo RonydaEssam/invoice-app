@@ -1,13 +1,17 @@
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import '../components/shared/styles/ListPage.css';
-import { deleteData } from '../api/transformData';
+import { deleteData, submitData } from '../api/transformData';
 import { useEffect, useState } from 'react';
 import type { Invoice } from '../types/types';
+import '../components/shared/styles/ListPage.css';
+import '../components/shared/styles/DetailsPage.css';
 
 function InvoiceDetailsPage() {
     const { id } = useParams();
     const navigate = useNavigate();
     const [invoice, setInvoice] = useState<Invoice>();
+    const totalPrice = invoice?.order.orderItems.reduce(
+        (sum, item) => sum + item.quantity * item.service.price, 0
+    )
 
     function deleteInvoice() {
         deleteData('invoices', Number(id))
@@ -28,34 +32,78 @@ function InvoiceDetailsPage() {
                 <button className='btn-delete' onClick={deleteInvoice}>delete</button>
             </div>
 
-            <div>
-                <p>Client Details:</p>
-                <p>name: {invoice?.order.client.name}</p>
-                <p>email: {invoice?.order.client.email}</p>
+            <div className='details-section'>
+                <p className="details-section-title">Invoice #{invoice?.id}</p>
+
+                <div className="details-row">
+                    <span className="details-label">Created</span>
+                    <span className="details-value">{invoice ? new Date(invoice.createdAt).toLocaleDateString() : ''}</span>
+                </div>
+
+                <div className="details-row">
+                    <span className="details-label">Status</span>
+                    <span className="details-value">{invoice?.status}</span>
+                </div>
+
+                <div className="details-row">
+                    <span className="details-label">Total Price</span>
+                    <span className="details-value">${invoice?.totalPrice}</span>
+                </div>
             </div>
 
-            <div>
-                <p>Order Details:</p>
-                {invoice?.order.orderItems.map(item => (
-                    <div className='card' key={invoice?.orderId}>
-                        <p>{item.service.name}</p>
-                        <p>{item.service.price}</p>
-                        <p>{item.service.description}</p>
-                        <p>{item.quantity}</p>
-                        <Link to={`/orders/${invoice?.orderId}`} className="btn-edit">View Order</Link>
-                    </div>
-                ))}
-                <p>Total Price: {invoice?.order.orderItems.reduce(
-                    (sum, item) => sum + item.quantity * item.service.price, 0
-                )}</p>
+            <div className="details-section">
+                <p className="details-section-title">Client</p>
+
+                <div className="details-row">
+                    <span className="details-label">Name</span>
+                    <span className="details-value"> {invoice?.order.client?.name}</span>
+                </div>
+
+                <div className="details-row">
+                    <span className="details-label">Email</span>
+                    <span className="details-value">{invoice?.order.client?.email}</span>
+                </div>
+
+                <div className="details-row">
+                    <span className="details-label">Address</span>
+                    <span className="details-value">{invoice?.order.client?.address}</span>
+                </div>
             </div>
 
-            <div>
-                <p>Invoice Details:</p>
-                <p>Created on: {invoice ? new Date(invoice.createdAt).toLocaleDateString() : ''}</p>
-                <p>Status: {invoice?.status}</p>
-                <p>Total Price: {invoice?.totalPrice}</p>
+            <div className="details-section">
+                <div className='list-header' >
+                    <p className="details-section-title">Order #{invoice?.orderId}</p>
+                    <Link to={`/orders/${invoice?.orderId}`} className="btn-edit">View Order</Link>
+                </div>
+
+                <table className="details-table">
+                    <thead>
+                        <tr>
+                            <th>Service</th>
+                            <th>Description</th>
+                            <th className="col-price">Price × Qty</th>
+                            <th className="col-total">Total</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {invoice?.order.orderItems.map(item => (
+                            <tr key={item.serviceId}>
+                                <td>{item.service.name}</td>
+                                <td>{item.service.description}</td>
+                                <td className="col-price">${item.service.price} × {item.quantity}</td>
+                                <td className="col-total">${item.service.price * item.quantity}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+
+                <div className="details-total">
+                    <span>Total</span>
+                    <span>${totalPrice}</span>
+                </div>
             </div>
+
         </div>
     )
 }

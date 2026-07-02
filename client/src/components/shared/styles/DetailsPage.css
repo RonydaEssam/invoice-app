@@ -1,0 +1,154 @@
+.details-section {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow);
+}
+
+.details-section-title {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text-muted);
+    margin: 0 0 14px;
+}
+
+.details-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+    font-size: 14px;
+    align-items: baseline;
+}
+
+.details-label {
+    color: var(--color-text-muted);
+    font-size: 13px;
+    min-width: 80px;
+    flex-shrink: 0;
+}
+
+.details-value {
+    color: var(--color-text);
+    font-weight: 500;
+}
+
+.line-items {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 14px;
+}
+
+.line-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+    background: var(--color-bg);
+    border-radius: 6px;
+    font-size: 14px;
+    gap: 16px;
+}
+
+.line-item-name {
+    font-weight: 500;
+    flex: 1;
+}
+
+.line-item-meta {
+    color: var(--color-text-muted);
+    font-size: 13px;
+}
+
+.details-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 12px;
+    border-top: 1px solid var(--color-border);
+    font-weight: 600;
+    font-size: 15px;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.status-badge.open {
+    background: color-mix(in srgb, var(--color-accent) 15%, transparent);
+    color: var(--color-accent);
+}
+
+.status-badge.closed {
+    background: color-mix(in srgb, var(--color-text-muted) 15%, transparent);
+    color: var(--color-text-muted);
+}
+
+.status-badge.draft {
+    background: color-mix(in srgb, var(--color-text-muted) 15%, transparent);
+    color: var(--color-text-muted);
+}
+
+.status-badge.sent {
+    background: color-mix(in srgb, #f59e0b 15%, transparent);
+    color: #f59e0b;
+}
+
+.status-badge.paid {
+    background: color-mix(in srgb, var(--color-success) 15%, transparent);
+    color: var(--color-success);
+}
+
+.empty-state {
+    text-align: center;
+    padding: 24px 0;
+    color: var(--color-text-muted);
+    font-size: 14px;
+}
+
+.details-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    margin-bottom: 14px;
+}
+
+.details-table th {
+    text-align: left;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text-muted);
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.details-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--color-border);
+    color: var(--color-text);
+}
+
+.details-table tr:last-child td {
+    border-bottom: none;
+}
+
+.details-table .col-price {
+    text-align: right;
+    color: var(--color-text-muted);
+    font-size: 13px;
+}
+
+.details-table .col-total {
+    text-align: right;
+    font-weight: 600;
+}
