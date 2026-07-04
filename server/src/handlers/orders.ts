@@ -127,6 +127,11 @@ const deleteOrder = async (req: Request, res: Response) => {
             return res.status(404).json({ error: 'order not found' });
         }
 
+        const invoice = await prisma.invoice.findFirst({ where: { orderId: id } });
+        if (invoice) {
+            return res.status(409).json({ error: 'can not delete order with existing invoice' });
+        }
+
         await prisma.order.delete({ where: { id } });
 
         return res.status(200).json({ message: `order with id ${id} is deleted` });
