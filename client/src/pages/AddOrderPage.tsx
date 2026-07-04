@@ -21,6 +21,10 @@ function AddOrderPage() {
     const [currentQuantity, setCurrentQuantity] = useState(1);
     const [orderStatus, setOrderStatus] = useState('Open');
 
+    const [errors, setErrors] = useState({
+        selectedClientId: '', currentServiceId: '', currentQuantity: '', orderStatus: '', orderItems: ''
+    });
+
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -58,15 +62,31 @@ function AddOrderPage() {
     }
 
     const saveOrder = () => {
+        const newErrors = {
+            selectedClientId: '', currentServiceId: '', currentQuantity: '', orderStatus: '', orderItems: ''
+        }
+        let hasError = false
+
         if (!selectedClientId) {
-            alert('Please select a client');
-            return;
+            newErrors.selectedClientId = 'A client must be selected'
+            hasError = true
+        }
+        if (!currentServiceId) {
+            newErrors.currentServiceId = 'A service must be selected'
+            hasError = true
+        }
+        if (!currentQuantity || currentQuantity < 1) {
+            newErrors.currentQuantity = 'Quantity must be at least 1'
+            hasError = true
         }
 
-        if (orderItems.length === 0) {
-            alert('Please add at least one service');
-            return;
+        if (!orderItems || orderItems.length < 1) {
+            newErrors.orderItems = 'A service must be added'
+            hasError = true
         }
+
+        setErrors(newErrors)
+        if (hasError) return
 
         const data = {
             clientId: selectedClientId,
@@ -84,7 +104,14 @@ function AddOrderPage() {
 
             <div className="form-field">
                 <label htmlFor="client">Client</label>
-                <select id="client" value={selectedClientId} onChange={(e) => setSelectedClientId(Number(e.target.value))}>
+                <select
+                    id="client"
+                    value={selectedClientId}
+                    className={errors.selectedClientId ? 'input-error' : ''}
+                    onChange={(e) => {
+                        setSelectedClientId(Number(e.target.value))
+                        setErrors(prev => ({ ...prev, selectedClientId: '' }))
+                    }}>
                     <option value=''>Select a client</option>
                     {clients.map(client => (
                         <option key={client.id} value={client.id}>
@@ -92,6 +119,7 @@ function AddOrderPage() {
                         </option>
                     ))}
                 </select>
+                {errors.selectedClientId && <p className="field-error">{errors.selectedClientId}</p>}
             </div>
 
             <ul className="order-items-list">
@@ -104,6 +132,8 @@ function AddOrderPage() {
                         </li>
                     )
                 })}
+
+                {errors.selectedClientId && <p className="field-error">{errors.orderItems}</p>}
             </ul>
 
             <div className="add-item-row">
@@ -112,12 +142,23 @@ function AddOrderPage() {
                     name='quantity'
                     type='number'
                     value={currentQuantity}
-                    onChange={(e) => setCurrentQuantity(Number(e.target.value))}
+                    onChange={(e) => {
+                        setCurrentQuantity(Number(e.target.value))
+                        setErrors(prev => ({ ...prev, currentQuantity: '' }))
+                    }}
+                    error={errors.currentQuantity}
                 />
 
                 <div className="form-field">
                     <label htmlFor="service">Service</label>
-                    <select id="service" value={currentServiceId} onChange={(e) => setCurrentServiceId(Number(e.target.value))}>
+                    <select
+                        id="service"
+                        value={currentServiceId}
+                        className={errors.currentServiceId ? 'input-error' : ''}
+                        onChange={(e) => {
+                            setCurrentServiceId(Number(e.target.value))
+                            setErrors(prev => ({ ...prev, currentServiceId: '' }))
+                        }}>
                         <option value=''>Add service</option>
                         {services.map(service => (
                             <option key={service.id} value={service.id}>
@@ -125,9 +166,10 @@ function AddOrderPage() {
                             </option>
                         ))}
                     </select>
+                    {errors.currentServiceId && <p className="field-error">{errors.currentServiceId}</p>}
                 </div>
 
-                <button className="btn-primary" onClick={addOrderItem}>Add service</button>
+                <button className="btn-primary" onClick={() => { addOrderItem(); setErrors(prev => ({ ...prev, orderItems: '' })) }}>Add service</button>
             </div>
 
             <div className="form-field status-field">

@@ -30,6 +30,16 @@
     box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 20%, transparent);
 }
 
+.form-field input.input-error {
+    border-color: var(--color-danger);
+}
+
+.field-error {
+    color: var(--color-danger);
+    font-size: 12px;
+    margin: 4px 0 0;
+}
+
 .form-actions {
     margin-top: 8px;
 }

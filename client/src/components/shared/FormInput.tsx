@@ -7,9 +7,10 @@ interface FormInputProps {
     label: string,
     type: 'text' | 'email' | 'number',
     name: string
+    error?: string
 }
 
-export function FormInput({ value, onChange, label, type, name }: FormInputProps) {
+export function FormInput({ value, onChange, label, type, name, error }: FormInputProps) {
     return (
         <div className="form-field">
             <label htmlFor={name}>{label}</label>
@@ -20,7 +21,9 @@ export function FormInput({ value, onChange, label, type, name }: FormInputProps
                 type={type}
                 min={type === 'number' ? 0 : undefined}
                 onChange={onChange}
+                className={error ? 'input-error' : ''}
             />
+            {error && <p className="field-error">{error}</p>}
         </div>
     )
 }

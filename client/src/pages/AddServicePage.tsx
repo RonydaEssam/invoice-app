@@ -9,12 +9,32 @@ function AddServicePage() {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [price, setPrice] = useState(0);
+    const [errors, setErrors] = useState({ name: '', description: '', price: '' });
 
     const navigate = useNavigate();
 
     const data = { name, description, price };
 
     const saveService = () => {
+        const newErrors = { name: '', description: '', price: '' };
+        let hasError = false;
+
+        if (!name || name.length < 2) {
+            newErrors.name = 'Name must be at least 2 characters'
+            hasError = true
+        }
+        if (!description || description.length < 2) {
+            newErrors.description = 'Description must be at least 2 characters'
+            hasError = true
+        }
+        if (!price || price < 1) {
+            newErrors.price = 'Price must be provided'
+            hasError = true
+        }
+
+        setErrors(newErrors)
+        if (hasError) return
+
         submitData("services", id ? "PUT" : "POST", data, id ? Number(id) : undefined)
             .then(() => navigate('/services'))
     }
@@ -40,7 +60,11 @@ function AddServicePage() {
                 name="name"
                 type="text"
                 value={name}
-                onChange={(event) => setName(event.target.value)}
+                onChange={(event) => {
+                    setName(event.target.value)
+                    setErrors(prev => ({ ...prev, name: '' }))
+                }}
+                error={errors.name}
             />
 
             <FormInput
@@ -48,7 +72,11 @@ function AddServicePage() {
                 name="description"
                 type="text"
                 value={description}
-                onChange={(event) => setDescription(event.target.value)}
+                onChange={(event) => {
+                    setDescription(event.target.value)
+                    setErrors(prev => ({ ...prev, description: '' }))
+                }}
+                error={errors.description}
             />
 
             <FormInput
@@ -56,7 +84,11 @@ function AddServicePage() {
                 name="price"
                 type="number"
                 value={price}
-                onChange={(event) => setPrice(Number(event.target.value))}
+                onChange={(event) => {
+                    setPrice(Number(event.target.value))
+                    setErrors(prev => ({ ...prev, price: '' }))
+                }}
+                error={errors.price}
             />
 
             <div className="form-actions">
