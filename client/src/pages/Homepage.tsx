@@ -25,7 +25,7 @@ function Homepage() {
 
     return (
         <div>
-            <div className="list-header">
+            <div className='list-header'>
                 <h1>Dashboard</h1>
             </div>
 
@@ -33,57 +33,60 @@ function Homepage() {
                 <div>
                     <p className='details-section-title'>Open Orders ({openOrders.length})</p>
 
-                    {openOrders.map(order => (
-                        <div className='details-section' key={order.id}>
-                            <div className="details-row">
-                                <span className="details-label">Order no.</span>
-                                <span className="details-value">{order.id}</span>
-                            </div>
+                    {(openOrders?.length === 0) ? <p className="empty-state">There are no open orders.</p> :
+                        openOrders.map(order => (
+                            <div className='details-section' key={order.id}>
+                                <div className="details-row">
+                                    <span className="details-label">Order no.</span>
+                                    <span className="details-value">{order.id}</span>
+                                </div>
 
-                            <div className="details-row">
-                                <span className="details-label">Client</span>
-                                <span className="details-value"> {order.client.name}</span>
-                            </div>
+                                <div className="details-row">
+                                    <span className="details-label">Client</span>
+                                    <span className="details-value"> {order.client.name}</span>
+                                </div>
 
-                            <div className="details-row">
-                                <span className="details-label">Date</span>
-                                <span className="details-value"> {new Date(order.date).toLocaleDateString()}</span>
-                            </div>
+                                <div className="details-row">
+                                    <span className="details-label">Date</span>
+                                    <span className="details-value"> {new Date(order.date).toLocaleDateString()}</span>
+                                </div>
 
-                            <Link to={`/orders/${order.id}`}>View details</Link>
-                        </div>
-                    ))}
+                                <Link to={`/orders/${order.id}`}>View details</Link>
+                            </div>
+                        ))}
 
                 </div>
 
                 <div>
                     <p className='details-section-title'>Unpaid Invoices ({unpaidInvoices.length})</p>
 
-                    {unpaidInvoices.map(invoice => (
-                        <div className='details-section' key={invoice.id}>
-                            <div className="details-row">
-                                <span className="details-label">Invoice no.</span>
-                                <span className="details-value">{invoice.id}</span>
-                            </div>
+                    {(unpaidInvoices?.length === 0) ? <p className="empty-state">There are no unpaid invoices.</p> :
 
-                            <div className="details-row">
-                                <span className="details-label">Client</span>
-                                <span className="details-value">{invoice.order.client.name}</span>
-                            </div>
+                        unpaidInvoices.map(invoice => (
+                            <div className='details-section' key={invoice.id}>
+                                <div className="details-row">
+                                    <span className="details-label">Invoice no.</span>
+                                    <span className="details-value">{invoice.id}</span>
+                                </div>
 
-                            <div className="details-row">
-                                <span className="details-label">Status</span>
-                                <span className="details-value">{invoice.status}</span>
-                            </div>
+                                <div className="details-row">
+                                    <span className="details-label">Client</span>
+                                    <span className="details-value">{invoice.order.client.name}</span>
+                                </div>
 
-                            <div className="details-row">
-                                <span className="details-label">Total Price</span>
-                                <span className="details-value">${invoice.totalPrice}</span>
-                            </div>
+                                <div className="details-row">
+                                    <span className="details-label">Status</span>
+                                    <span className="details-value">{invoice.status}</span>
+                                </div>
 
-                            <Link to={`/invoices/${invoice.id}`}>View details</Link>
-                        </div>
-                    ))}
+                                <div className="details-row">
+                                    <span className="details-label">Total Price</span>
+                                    <span className="details-value">${invoice.totalPrice}</span>
+                                </div>
+
+                                <Link to={`/invoices/${invoice.id}`}>View details</Link>
+                            </div>
+                        ))}
                 </div>
             </div>
         </div>
