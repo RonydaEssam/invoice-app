@@ -4,6 +4,7 @@ export function useFetch<T>(handle: string) {
     const [data, setData] = useState<T | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [refetchTrigger, setRefetchTrigger] = useState(0)
 
     const url = `http://localhost:3000/${handle}`
 
@@ -18,7 +19,11 @@ export function useFetch<T>(handle: string) {
                 setError(error.message)
                 setIsLoading(false)
             })
-    }, [url])
+    }, [url, refetchTrigger])
 
-    return { data, setData, isLoading, error }
+    function refetch() {
+        setRefetchTrigger(prev => prev + 1)
+    }
+
+    return { data, setData, isLoading, error, refetch }
 }

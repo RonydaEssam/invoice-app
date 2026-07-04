@@ -1,16 +1,15 @@
-import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom"
-import type { Invoice, Order } from "../types/types";
+import type { Order } from "../types/types";
 import { submitData } from "../api/transformData";
 import '../components/shared/styles/ListPage.css';
 import '../components/shared/styles/DetailsPage.css';
 import { useConfirmDelete } from "../hooks/useConfirmDelete";
 import ConfirmModal from "../components/shared/ConfirmModal";
+import { useFetch } from "../hooks/useFetch";
 
 function OrderDetailsPage() {
     const { id } = useParams();
-    const [order, setOrder] = useState<Order>();
-    const [invoice, setInvoice] = useState<Invoice>();
+    const { data: order, isLoading, error, refetch } = useFetch<Order>(`orders/${Number(id)}`)
 
     const orderDate = order?.date ? new Date(order.date).toLocaleDateString() : "";
     const InvoiceDate = order?.invoice?.createdAt ? new Date(order.invoice.createdAt).toLocaleDateString() : "";
@@ -25,16 +24,13 @@ function OrderDetailsPage() {
         (_id) => navigate('/orders')
     )
 
-    useEffect(() => {
-        fetch(`http://localhost:3000/orders/${Number(id)}`)
-            .then(response => response.json())
-            .then(data => setOrder(data))
-    }, [invoice])
-
     function createInvoice() {
         submitData("invoices", "POST", { orderId: Number(id) })
-            .then(data => setInvoice(data.invoice))
+            .then(() => refetch())
     }
+
+    if (isLoading) return <div className="loading"><p>Loading...</p></div>
+    if (error) return <div className="loading"><p>Something went wrong.</p></div>
 
     return (
         <div>

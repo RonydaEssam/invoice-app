@@ -1,15 +1,16 @@
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
 import type { Invoice } from '../types/types';
 import '../components/shared/styles/ListPage.css';
 import '../components/shared/styles/DetailsPage.css';
 import { useConfirmDelete } from '../hooks/useConfirmDelete';
 import ConfirmModal from '../components/shared/ConfirmModal';
+import { useFetch } from '../hooks/useFetch';
 
 function InvoiceDetailsPage() {
     const { id } = useParams();
     const navigate = useNavigate();
-    const [invoice, setInvoice] = useState<Invoice>();
+    const { data: invoice, isLoading, error } = useFetch<Invoice>(`invoices/${Number(id)}`)
+
     const totalPrice = invoice?.order.orderItems.reduce(
         (sum, item) => sum + item.quantity * item.service.price, 0
     )
@@ -19,11 +20,8 @@ function InvoiceDetailsPage() {
         (_id) => navigate('/invoices')
     )
 
-    useEffect(() => {
-        fetch(`http://localhost:3000/invoices/${Number(id)}`)
-            .then(response => response.json())
-            .then(data => setInvoice(data))
-    }, [])
+    if (isLoading) return <div className="loading"><p>Loading...</p></div>
+    if (error) return <div className="loading"><p>Something went wrong.</p></div>
 
     return (
         <div>

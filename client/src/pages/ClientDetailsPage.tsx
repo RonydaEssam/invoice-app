@@ -1,14 +1,14 @@
 import { Link, useNavigate, useParams } from "react-router-dom"
-import { useEffect, useState } from "react";
 import type { Client } from "../types/types";
 import '../components/shared/styles/ListPage.css';
 import '../components/shared/styles/DetailsPage.css';
 import ConfirmModal from "../components/shared/ConfirmModal";
 import { useConfirmDelete } from "../hooks/useConfirmDelete";
+import { useFetch } from "../hooks/useFetch";
 
 function ClientDetailsPage() {
     const { id } = useParams();
-    const [client, setClient] = useState<Client>();
+    const { data: client, isLoading, error } = useFetch<Client>(`clients/${Number(id)}`)
     const navigate = useNavigate();
 
     const { showConfirm, errorMessage, handleDeleteClick, handleConfirmDelete, handleCancel, clearError } = useConfirmDelete(
@@ -16,11 +16,8 @@ function ClientDetailsPage() {
         (_id) => navigate('/clients')
     )
 
-    useEffect(() => {
-        fetch(`http://localhost:3000/clients/${Number(id)}`)
-            .then(response => response.json())
-            .then(data => setClient(data))
-    }, [])
+    if (isLoading) return <div className="loading"><p>Loading...</p></div>
+    if (error) return <div className="loading"><p>Something went wrong.</p></div>
 
     return (
         <div>
