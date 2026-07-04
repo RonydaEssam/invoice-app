@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import '../components/shared/styles/ListPage.css';
 import { Link, useNavigate } from 'react-router-dom';
 import type { Client } from '../types/types';
