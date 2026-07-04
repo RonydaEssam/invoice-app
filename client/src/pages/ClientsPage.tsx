@@ -1,24 +1,24 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import '../components/shared/styles/ListPage.css';
 import { Link, useNavigate } from 'react-router-dom';
 import type { Client } from '../types/types';
 import ConfirmModal from '../components/shared/ConfirmModal';
 import { useConfirmDelete } from '../hooks/useConfirmDelete';
+import { useFetch } from '../hooks/useFetch';
 
 function ClientsPage() {
-    const [clients, setClients] = useState<Client[]>([])
+    const { data: clients, setData: setClients, isLoading, error } = useFetch<Client[]>('clients')
+
     const navigate = useNavigate();
 
     const { showConfirm, errorMessage, handleDeleteClick, handleConfirmDelete, handleCancel, clearError } = useConfirmDelete(
         'clients',
-        id => setClients(clients.filter(c => c.id !== id))
+        id => setClients(clients?.filter(c => c.id !== id) ?? [])
     )
 
-    useEffect(() => {
-        fetch('http://localhost:3000/clients')
-            .then(response => response.json())
-            .then(data => setClients(data))
-    }, [])
+    if (isLoading) return <div className="loading"><p>Loading...</p></div>
+    if (error) return <div className="loading"><p>Error: {error}</p></div>
+    if (!clients) return null
 
     return (
         <div>

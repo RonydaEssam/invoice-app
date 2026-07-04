@@ -1,24 +1,22 @@
-import { useEffect, useState } from "react";
 import '../components/shared/styles/ListPage.css';
 import { Link, useNavigate } from "react-router-dom";
 import type { Service } from '../types/types';
 import ConfirmModal from "../components/shared/ConfirmModal";
 import { useConfirmDelete } from "../hooks/useConfirmDelete";
+import { useFetch } from "../hooks/useFetch";
 
 function ServicesPage() {
-    const [services, setServices] = useState<Service[]>([]);
+    const { data: services, setData: setServices, isLoading, error } = useFetch<Service[]>('services')
     const navigate = useNavigate();
 
     const { showConfirm, errorMessage, handleDeleteClick, handleConfirmDelete, handleCancel, clearError } = useConfirmDelete(
         "services",
-        id => setServices(services.filter(c => c.id !== id))
+        id => setServices(services?.filter(c => c.id !== id) ?? [])
     )
 
-    useEffect(() => {
-        fetch('http://localhost:3000/services')
-            .then(response => response.json())
-            .then(data => setServices(data))
-    }, [])
+    if (isLoading) return <div className="loading"><p>Loading...</p></div>
+    if (error) return <div className="loading"><p>Error: {error}</p></div>
+    if (!services) return null
 
     return (
         <div>

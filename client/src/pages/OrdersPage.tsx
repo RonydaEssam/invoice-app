@@ -1,23 +1,21 @@
-import { useEffect, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import type { Order } from '../types/types';
 import ConfirmModal from "../components/shared/ConfirmModal";
 import { useConfirmDelete } from "../hooks/useConfirmDelete";
+import { useFetch } from "../hooks/useFetch";
 
 function OrdersPage() {
-    const [orders, setOrders] = useState<Order[]>([]);
+    const { data: orders, setData: setOrders, isLoading, error } = useFetch<Order[]>('orders')
     const navigate = useNavigate();
 
     const { showConfirm, errorMessage, handleDeleteClick, handleConfirmDelete, handleCancel, clearError } = useConfirmDelete(
         "orders",
-        id => setOrders(orders.filter(c => c.id !== id))
+        id => setOrders(orders?.filter(c => c.id !== id) ?? [])
     )
 
-    useEffect(() => {
-        fetch('http://localhost:3000/orders')
-            .then(response => response.json())
-            .then(data => setOrders(data))
-    }, [])
+    if (isLoading) return <div className="loading"><p>Loading...</p></div>
+    if (error) return <div className="loading"><p>Error: {error}</p></div>
+    if (!orders) return null
 
     return (
         <div>

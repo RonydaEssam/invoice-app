@@ -1,33 +1,32 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import type { Invoice } from "../types/types";
 import { submitData } from "../api/transformData";
 import { Link } from "react-router-dom";
 import ConfirmModal from "../components/shared/ConfirmModal";
 import { useConfirmDelete } from "../hooks/useConfirmDelete";
+import { useFetch } from "../hooks/useFetch";
 
 function InvoicesPage() {
-    const [invoices, setInvoices] = useState<Invoice[]>([]);
+    const { data: invoices, setData: setInvoices, isLoading, error } = useFetch<Invoice[]>('invoices')
     const [editingInvoiceId, setEditingInvoiceId] = useState<number | null>(null);
 
     const { showConfirm, errorMessage, handleDeleteClick, handleConfirmDelete, handleCancel, clearError } = useConfirmDelete(
         "invoices",
-        id => setInvoices(invoices.filter(c => c.id !== id))
+        id => setInvoices(invoices?.filter(c => c.id !== id) ?? [])
     )
-
-    useEffect(() => {
-        fetch('http://localhost:3000/invoices')
-            .then(response => response.json())
-            .then(data => setInvoices(data))
-    }, [])
 
     function updateInvoiceStatus(id: number, newStatus: "Draft" | "Sent" | "Paid") {
         submitData("invoices", "PATCH", { status: newStatus }, id)
             .then(() => {
-                setInvoices(invoices.map(invoice =>
+                setInvoices(invoices?.map(invoice =>
                     invoice.id === id ? { ...invoice, status: newStatus } : invoice
-                ))
+                ) ?? [])
             })
     }
+
+    if (isLoading) return <div className="loading"><p>Loading...</p></div>
+    if (error) return <div className="loading"><p>Error: {error}</p></div>
+    if (!invoices) return null
 
     return (
         <div>
