@@ -1,9 +1,10 @@
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { deleteData } from '../api/transformData';
 import { useEffect, useState } from 'react';
 import type { Invoice } from '../types/types';
 import '../components/shared/styles/ListPage.css';
 import '../components/shared/styles/DetailsPage.css';
+import { useConfirmDelete } from '../hooks/useConfirmDelete';
+import ConfirmModal from '../components/shared/ConfirmModal';
 
 function InvoiceDetailsPage() {
     const { id } = useParams();
@@ -13,11 +14,10 @@ function InvoiceDetailsPage() {
         (sum, item) => sum + item.quantity * item.service.price, 0
     )
 
-    function deleteInvoice() {
-        deleteData('invoices', Number(id))
-            .then(() => navigate(`/invoices`))
-            .catch(error => alert(error.message))
-    }
+    const { showConfirm, errorMessage, handleDeleteClick, handleConfirmDelete, handleCancel, clearError } = useConfirmDelete(
+        'invoices',
+        (_id) => navigate('/invoices')
+    )
 
     useEffect(() => {
         fetch(`http://localhost:3000/invoices/${Number(id)}`)
@@ -29,7 +29,7 @@ function InvoiceDetailsPage() {
         <div>
             <div className="list-header">
                 <h1>Invoice Details</h1>
-                <button className='btn-delete' onClick={deleteInvoice}>delete</button>
+                <button className='btn-delete' onClick={() => handleDeleteClick(Number(id))}>delete</button>
             </div>
 
             <div className='details-section'>
@@ -104,6 +104,22 @@ function InvoiceDetailsPage() {
                 </div>
             </div>
 
+            {showConfirm && (
+                <ConfirmModal
+                    message="This invoice will be permanently deleted."
+                    onConfirm={handleConfirmDelete}
+                    onCancel={handleCancel}
+                />
+            )}
+
+            {errorMessage && (
+                <ConfirmModal
+                    type="error"
+                    message={errorMessage}
+                    onConfirm={clearError}
+                    onCancel={clearError}
+                />
+            )}
         </div>
     )
 }

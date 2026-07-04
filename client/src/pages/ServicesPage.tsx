@@ -1,24 +1,24 @@
 import { useEffect, useState } from "react";
 import '../components/shared/styles/ListPage.css';
 import { Link, useNavigate } from "react-router-dom";
-import { deleteData } from "../api/transformData";
 import type { Service } from '../types/types';
+import ConfirmModal from "../components/shared/ConfirmModal";
+import { useConfirmDelete } from "../hooks/useConfirmDelete";
 
 function ServicesPage() {
     const [services, setServices] = useState<Service[]>([]);
     const navigate = useNavigate();
+
+    const { showConfirm, errorMessage, handleDeleteClick, handleConfirmDelete, handleCancel, clearError } = useConfirmDelete(
+        "services",
+        id => setServices(services.filter(c => c.id !== id))
+    )
 
     useEffect(() => {
         fetch('http://localhost:3000/services')
             .then(response => response.json())
             .then(data => setServices(data))
     }, [])
-
-    function deleteService(id: number) {
-        deleteData("services", Number(id))
-            .then(() => setServices(services.filter(service => service.id !== id)))
-            .catch(error => alert(error.message))
-    }
 
     return (
         <div>
@@ -39,12 +39,29 @@ function ServicesPage() {
 
                             <div className="card-actions">
                                 <button className="btn-edit" onClick={() => navigate(`edit/${service.id}`)}>edit</button>
-                                <button className="btn-delete" onClick={() => deleteService(service.id)}>delete</button>
+                                <button className="btn-delete" onClick={() => handleDeleteClick(service.id)}>delete</button>
                             </div>
                         </div>
                     ))
                 }
             </div>
+
+            {showConfirm && (
+                <ConfirmModal
+                    message="This service will be permanently deleted."
+                    onConfirm={handleConfirmDelete}
+                    onCancel={handleCancel}
+                />
+            )}
+
+            {errorMessage && (
+                <ConfirmModal
+                    type="error"
+                    message={errorMessage}
+                    onConfirm={clearError}
+                    onCancel={clearError}
+                />
+            )}
         </div>
     )
 }

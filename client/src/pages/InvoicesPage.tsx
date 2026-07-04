@@ -1,23 +1,24 @@
 import { useEffect, useState } from "react"
 import type { Invoice } from "../types/types";
-import { deleteData, submitData } from "../api/transformData";
+import { submitData } from "../api/transformData";
 import { Link } from "react-router-dom";
+import ConfirmModal from "../components/shared/ConfirmModal";
+import { useConfirmDelete } from "../hooks/useConfirmDelete";
 
 function InvoicesPage() {
     const [invoices, setInvoices] = useState<Invoice[]>([]);
     const [editingInvoiceId, setEditingInvoiceId] = useState<number | null>(null);
+
+    const { showConfirm, errorMessage, handleDeleteClick, handleConfirmDelete, handleCancel, clearError } = useConfirmDelete(
+        "invoices",
+        id => setInvoices(invoices.filter(c => c.id !== id))
+    )
 
     useEffect(() => {
         fetch('http://localhost:3000/invoices')
             .then(response => response.json())
             .then(data => setInvoices(data))
     }, [])
-
-    function deleteInvoice(id: number) {
-        deleteData("invoices", Number(id))
-            .then(() => setInvoices(invoices.filter(invoice => invoice.id !== id)))
-            .catch(error => alert(error.message))
-    }
 
     function updateInvoiceStatus(id: number, newStatus: "Draft" | "Sent" | "Paid") {
         submitData("invoices", "PATCH", { status: newStatus }, id)
@@ -72,11 +73,28 @@ function InvoicesPage() {
                         <div className="card-actions">
                             <Link to={`/invoices/${invoice.id}`} className="btn-edit">View details</Link>
                             <button className="btn-edit" onClick={() => setEditingInvoiceId(invoice.id)}>edit</button>
-                            <button className="btn-delete" onClick={() => deleteInvoice(invoice.id)}>delete</button>
+                            <button className="btn-delete" onClick={() => handleDeleteClick(invoice.id)}>delete</button>
                         </div>
                     </div>
                 ))}
             </div>
+
+            {showConfirm && (
+                <ConfirmModal
+                    message="This invoice will be permanently deleted."
+                    onConfirm={handleConfirmDelete}
+                    onCancel={handleCancel}
+                />
+            )}
+
+            {errorMessage && (
+                <ConfirmModal
+                    type="error"
+                    message={errorMessage}
+                    onConfirm={clearError}
+                    onCancel={clearError}
+                />
+            )}
         </div>
     )
 }

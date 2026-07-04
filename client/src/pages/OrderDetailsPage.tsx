@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom"
 import type { Invoice, Order } from "../types/types";
-import { deleteData, submitData } from "../api/transformData";
+import { submitData } from "../api/transformData";
 import '../components/shared/styles/ListPage.css';
 import '../components/shared/styles/DetailsPage.css';
+import { useConfirmDelete } from "../hooks/useConfirmDelete";
+import ConfirmModal from "../components/shared/ConfirmModal";
 
 function OrderDetailsPage() {
     const { id } = useParams();
@@ -18,6 +20,11 @@ function OrderDetailsPage() {
         (sum, item) => sum + (item.service.price * item.quantity), 0
     ) ?? 0
 
+    const { showConfirm, errorMessage, handleDeleteClick, handleConfirmDelete, handleCancel, clearError } = useConfirmDelete(
+        "orders",
+        (_id) => navigate('/orders')
+    )
+
     useEffect(() => {
         fetch(`http://localhost:3000/orders/${Number(id)}`)
             .then(response => response.json())
@@ -29,19 +36,13 @@ function OrderDetailsPage() {
             .then(data => setInvoice(data.invoice))
     }
 
-    function deleteOrder() {
-        deleteData("orders", Number(id))
-            .then(() => navigate('/orders'))
-            .catch(error => alert(error.message))
-    }
-
     return (
         <div>
             <div className="list-header">
                 <h1>Order Details</h1>
                 <div className="card-actions">
                     <Link to={`/orders/edit/${Number(id)}`} className="btn-edit">Edit Order</Link>
-                    <button onClick={deleteOrder} className="btn-delete">delete</button>
+                    <button onClick={() => handleDeleteClick(Number(id))} className="btn-delete">delete</button>
                 </div>
             </div>
 
@@ -123,6 +124,23 @@ function OrderDetailsPage() {
                     </div>
                 )}
             </div>
+
+            {showConfirm && (
+                <ConfirmModal
+                    message="This order will be permanently deleted."
+                    onConfirm={handleConfirmDelete}
+                    onCancel={handleCancel}
+                />
+            )}
+
+            {errorMessage && (
+                <ConfirmModal
+                    type="error"
+                    message={errorMessage}
+                    onConfirm={clearError}
+                    onCancel={clearError}
+                />
+            )}
         </div>
     )
 }
