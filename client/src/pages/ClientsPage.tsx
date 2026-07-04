@@ -17,7 +17,7 @@ function ClientsPage() {
 
     if (isLoading) return <div className="loading"><p>Loading...</p></div>
     if (error) return <div className="loading"><p>Error: {error}</p></div>
-    if (!clients) return null
+
 
     return (
         <div>
@@ -26,22 +26,26 @@ function ClientsPage() {
                 <Link to='/clients/new' className='btn-primary'>+ Add Client</Link>
             </div>
 
-            <div className='card-list'>
-                {clients.map(client => (
-                    <div className='card' key={client.id}>
-                        <div>
-                            <p className='card-title'>{client.name}</p>
-                            <p className='card-subtitle'>{client.email} . {client.address}</p>
-                        </div>
+            {(clients?.length === 0) ?
+                <p className="empty-state">No clients yet — add your first one.</p> :
 
-                        <div className='card-actions'>
-                            <Link to={`/clients/${client.id}`} className='btn-edit'>View details</Link>
-                            <button className='btn-edit' onClick={() => navigate(`edit/${client.id}`)}>edit</button>
-                            <button className='btn-delete' onClick={() => handleDeleteClick(client.id)}>delete</button>
+                <div className='card-list'>
+                    {clients?.map(client => (
+                        <div className='card' key={client.id}>
+                            <div>
+                                <p className='card-title'>{client.name}</p>
+                                <p className='card-subtitle'>{client.email} . {client.address}</p>
+                            </div>
+
+                            <div className='card-actions'>
+                                <Link to={`/clients/${client.id}`} className='btn-edit'>View details</Link>
+                                <button className='btn-edit' onClick={() => navigate(`edit/${client.id}`)}>edit</button>
+                                <button className='btn-delete' onClick={() => handleDeleteClick(client.id)}>delete</button>
+                            </div>
                         </div>
-                    </div>
-                ))}
-            </div>
+                    ))}
+                </div>
+            }
 
             {showConfirm && (
                 <ConfirmModal

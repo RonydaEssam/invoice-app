@@ -24,26 +24,30 @@ function OrdersPage() {
                 <Link to='/orders/new' className="btn-primary">+ Add Order</Link>
             </div>
 
-            <div className="card-list">
-                {
-                    orders.map(order => (
-                        <div className="card" key={order.id}>
-                            <div>
-                                <p>Client: {order.client.name}</p>
-                                <p>Order: {order.orderItems.map(item => `${item.service.name} * ${item.quantity}`).join(', ')}</p>
-                                <p>Status: {order.status}</p>
-                            </div>
+            {(orders?.length === 0) ?
+                <p className="empty-state">No orders yet — add your first one.</p> :
 
-                            <div className="card-actions">
-                                <Link to={`/orders/${order.id}`} className="btn-edit">View details</Link>
-                                <button className="btn-edit" onClick={() => navigate(`edit/${order.id}`)}>edit</button>
-                                <button className="btn-delete" onClick={() => handleDeleteClick(order.id)}>delete</button>
-                            </div>
+                <div className="card-list">
+                    {
+                        orders.map(order => (
+                            <div className="card" key={order.id}>
+                                <div>
+                                    <p>Client: {order.client.name}</p>
+                                    <p>Order: {order.orderItems.map(item => `${item.service.name} * ${item.quantity}`).join(', ')}</p>
+                                    <p>Status: {order.status}</p>
+                                </div>
 
-                        </div>
-                    ))
-                }
-            </div>
+                                <div className="card-actions">
+                                    <Link to={`/orders/${order.id}`} className="btn-edit">View details</Link>
+                                    <button className="btn-edit" onClick={() => navigate(`edit/${order.id}`)}>edit</button>
+                                    <button className="btn-delete" onClick={() => handleDeleteClick(order.id)}>delete</button>
+                                </div>
+
+                            </div>
+                        ))
+                    }
+                </div>
+            }
 
             {showConfirm && (
                 <ConfirmModal

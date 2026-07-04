@@ -25,24 +25,28 @@ function ServicesPage() {
                 <Link to='/services/new' className="btn-primary">+ Add Service</Link>
             </div>
 
-            <div className="card-list">
-                {
-                    services.map(service => (
-                        <div className="card" key={service.id}>
-                            <div>
-                                <p className="card-title">{service.name}</p>
-                                <p className="card-subtitle">price: {service.price}</p>
-                                <p className="card-description">{service.description}</p>
-                            </div>
+            {(services?.length === 0) ?
+                <p className="empty-state">No services yet — add your first one.</p> :
 
-                            <div className="card-actions">
-                                <button className="btn-edit" onClick={() => navigate(`edit/${service.id}`)}>edit</button>
-                                <button className="btn-delete" onClick={() => handleDeleteClick(service.id)}>delete</button>
+                <div className="card-list">
+                    {
+                        services.map(service => (
+                            <div className="card" key={service.id}>
+                                <div>
+                                    <p className="card-title">{service.name}</p>
+                                    <p className="card-subtitle">price: {service.price}</p>
+                                    <p className="card-description">{service.description}</p>
+                                </div>
+
+                                <div className="card-actions">
+                                    <button className="btn-edit" onClick={() => navigate(`edit/${service.id}`)}>edit</button>
+                                    <button className="btn-delete" onClick={() => handleDeleteClick(service.id)}>delete</button>
+                                </div>
                             </div>
-                        </div>
-                    ))
-                }
-            </div>
+                        ))
+                    }
+                </div>
+            }
 
             {showConfirm && (
                 <ConfirmModal

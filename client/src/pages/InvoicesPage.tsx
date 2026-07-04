@@ -35,48 +35,52 @@ function InvoicesPage() {
                 <Link to='/orders' className='btn-primary'>+ Add Invoice</Link>
             </div>
 
-            <div className="card-list">
-                {invoices.map(invoice => (
-                    <div className="card" key={invoice.id}>
-                        <div>
-                            <p className="card-title">Invoice #{invoice.id} - {invoice.order.client.name}</p>
+            {(invoices?.length === 0) ?
+                <p className="empty-state">No invoices yet — add your first one.</p> :
 
-                            {editingInvoiceId === invoice.id ? (
-                                <>
-                                    <span>Status: </span>
-                                    <select
-                                        className="status-select"
-                                        value={invoice.status}
-                                        onChange={(e) => {
-                                            updateInvoiceStatus(invoice.id, e.target.value as "Draft" | "Sent" | "Paid")
-                                            setEditingInvoiceId(null)
-                                        }}
-                                    >
-                                        <option value="Draft">Draft</option>
-                                        <option value="Sent">Sent</option>
-                                        <option value="Paid">Paid</option>
-                                    </select>
-                                </>) : (
-                                <span>Status: {invoice.status}</span>
-                            )}
+                <div className="card-list">
+                    {invoices.map(invoice => (
+                        <div className="card" key={invoice.id}>
+                            <div>
+                                <p className="card-title">Invoice #{invoice.id} - {invoice.order.client.name}</p>
 
-                            <p className="card-subtitle">Total: ${invoice.totalPrice}</p>
-                            <p className="card-description">
-                                Details: {invoice.order.orderItems
-                                    .map(item => `${item.service.name} * ${item.quantity}`)
-                                    .join(', ')
-                                }
-                            </p>
+                                {editingInvoiceId === invoice.id ? (
+                                    <>
+                                        <span>Status: </span>
+                                        <select
+                                            className="status-select"
+                                            value={invoice.status}
+                                            onChange={(e) => {
+                                                updateInvoiceStatus(invoice.id, e.target.value as "Draft" | "Sent" | "Paid")
+                                                setEditingInvoiceId(null)
+                                            }}
+                                        >
+                                            <option value="Draft">Draft</option>
+                                            <option value="Sent">Sent</option>
+                                            <option value="Paid">Paid</option>
+                                        </select>
+                                    </>) : (
+                                    <span>Status: {invoice.status}</span>
+                                )}
+
+                                <p className="card-subtitle">Total: ${invoice.totalPrice}</p>
+                                <p className="card-description">
+                                    Details: {invoice.order.orderItems
+                                        .map(item => `${item.service.name} * ${item.quantity}`)
+                                        .join(', ')
+                                    }
+                                </p>
+                            </div>
+
+                            <div className="card-actions">
+                                <Link to={`/invoices/${invoice.id}`} className="btn-edit">View details</Link>
+                                <button className="btn-edit" onClick={() => setEditingInvoiceId(invoice.id)}>edit</button>
+                                <button className="btn-delete" onClick={() => handleDeleteClick(invoice.id)}>delete</button>
+                            </div>
                         </div>
-
-                        <div className="card-actions">
-                            <Link to={`/invoices/${invoice.id}`} className="btn-edit">View details</Link>
-                            <button className="btn-edit" onClick={() => setEditingInvoiceId(invoice.id)}>edit</button>
-                            <button className="btn-delete" onClick={() => handleDeleteClick(invoice.id)}>delete</button>
-                        </div>
-                    </div>
-                ))}
-            </div>
+                    ))}
+                </div>
+            }
 
             {showConfirm && (
                 <ConfirmModal
