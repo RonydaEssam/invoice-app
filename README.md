@@ -2,6 +2,10 @@
 
 A full-stack invoice management web app for solo service providers — manage clients, services, and orders, then generate and track invoices.
 
+## Live Demo
+
+[Invoice Generator](https://invoice-app-lilac-theta.vercel.app)
+
 ## Overview
 
 This app lets a freelancer or small service business:
