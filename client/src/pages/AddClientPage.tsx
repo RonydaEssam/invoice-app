@@ -3,6 +3,9 @@ import { FormInput } from '../components/shared/FormInput';
 import '../components/shared/FormInput.css';
 import { useNavigate, useParams } from 'react-router-dom';
 import { submitData } from '../api/transformData';
+import { API_URL } from '../api/config';
+
+const URL = API_URL;
 
 function AddClientPage() {
     const [name, setName] = useState('');
@@ -42,7 +45,7 @@ function AddClientPage() {
     useEffect(() => {
         if (!id) return;
 
-        fetch(`http://localhost:3000/clients/${Number(id)}`)
+        fetch(`${URL}/${Number(id)}`)
             .then(response => response.json())
             .then(data => {
                 setName(data.name);

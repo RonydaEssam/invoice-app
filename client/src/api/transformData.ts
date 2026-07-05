@@ -1,7 +1,9 @@
+import { API_URL } from "./config";
+
 type Resource = 'clients' | 'services' | 'orders' | 'invoices';
 type Method = 'PUT' | 'POST' | 'PATCH';
 
-const URL = 'http://localhost:3000';
+const URL = API_URL;
 
 const submitData = (resource: Resource, method: Method, data: object, id?: number) => {
     return fetch(id ? `${URL}/${resource}/${id}` : `${URL}/${resource}`, {

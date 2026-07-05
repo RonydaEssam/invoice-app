@@ -1,0 +1,1 @@
+export const API_URL = 'https://calm-hope-production.up.railway.app'

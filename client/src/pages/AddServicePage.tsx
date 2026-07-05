@@ -3,6 +3,9 @@ import { FormInput } from "../components/shared/FormInput";
 import { useEffect, useState } from "react";
 import { submitData } from "../api/transformData";
 import '../components/shared/FormInput.css'
+import { API_URL } from "../api/config";
+
+const URL = API_URL;
 
 function AddServicePage() {
     const { id } = useParams();
@@ -42,7 +45,7 @@ function AddServicePage() {
     useEffect(() => {
         if (!id) return;
 
-        fetch(`http://localhost:3000/services/${Number(id)}`)
+        fetch(`${URL}/services/${Number(id)}`)
             .then(response => response.json())
             .then(data => {
                 setName(data.name)

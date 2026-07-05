@@ -4,6 +4,9 @@ import type { Client, Service } from "../types/types";
 import { submitData } from "../api/transformData";
 import { FormInput } from "../components/shared/FormInput";
 import '../../src/components/shared/styles/AddOrderPage.css'
+import { API_URL } from "../api/config";
+
+const URL = API_URL;
 
 interface OrderItemInput {
     serviceId: number
@@ -28,13 +31,13 @@ function AddOrderPage() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch('http://localhost:3000/clients')
+        fetch(`${URL}/clients`)
             .then(response => response.json())
             .then(data => setClients(data))
     }, [])
 
     useEffect(() => {
-        fetch('http://localhost:3000/services')
+        fetch(`${URL}/services`)
             .then(response => response.json())
             .then(data => setServices(data))
     }, [])
@@ -42,7 +45,7 @@ function AddOrderPage() {
     useEffect(() => {
         if (!id) return;
 
-        fetch(`http://localhost:3000/orders/${Number(id)}`)
+        fetch(`${URL}/orders/${Number(id)}`)
             .then(response => response.json())
             .then(data => {
                 setSelectedClientId(data.clientId)

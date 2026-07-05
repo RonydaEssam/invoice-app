@@ -3,21 +3,24 @@ import '../components/shared/styles/DetailsPage.css';
 import { useEffect, useState } from 'react';
 import type { Invoice, Order } from '../types/types';
 import { Link } from 'react-router-dom';
+import { API_URL } from '../api/config';
+
+const URL = API_URL;
 
 function Homepage() {
     const [openOrders, setOpenOrders] = useState<Order[]>([]);
     const [unpaidInvoices, setUnpaidInvoices] = useState<Invoice[]>([]);
 
     useEffect(() => {
-        fetch('http://localhost:3000/orders?status=Open')
+        fetch(`${URL}/orders?status=Open`)
             .then(response => response.json())
             .then(data => setOpenOrders(data))
     }, [])
 
     useEffect(() => {
         Promise.all([
-            fetch('http://localhost:3000/invoices?status=Draft').then(response => response.json()),
-            fetch('http://localhost:3000/invoices?status=Sent').then(response => response.json()),
+            fetch(`${URL}/invoices?status=Draft`).then(response => response.json()),
+            fetch(`${URL}/invoices?status=Sent`).then(response => response.json()),
         ])
             .then(([draft, sent]) => setUnpaidInvoices([...draft, ...sent]))
 
