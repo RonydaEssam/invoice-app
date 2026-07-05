@@ -2,9 +2,10 @@
   "compilerOptions": {
     "rootDir": ".",
     "outDir": "./dist",
-    "module": "esnext",
-    "target": "esnext",
-    "moduleResolution": "bundler",
+    "module": "commonJs",
+    "target": "es2020",
+    "moduleResolution": "node",
+    "ignoreDeprecations": "6.0",
     "sourceMap": true,
     "declaration": true,
     "declarationMap": true,
