@@ -68,7 +68,7 @@ const createInvoice = async (req: Request, res: Response) => {
 
         const orderItems = await prisma.orderItem.findMany({ where: { orderId: orderId }, include: { service: true } });
 
-        const totalPrice = orderItems.reduce((sum, item) => sum + (item.quantity * item.service.price), 0);
+        const totalPrice = orderItems.reduce((sum: number, item: any) => sum + (item.quantity * item.service.price), 0);
 
         const newInvoice = await prisma.invoice.create({
             data: {
