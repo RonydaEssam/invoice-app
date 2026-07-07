@@ -45,9 +45,15 @@ body {
 }
 
 h1 {
-  font-size: 28px;
+  font-size: 24px;
   font-weight: 600;
   margin: 0 0 16px;
+}
+
+@media (min-width: 768px) {
+  h1 {
+    font-size: 28px;
+  }
 }
 
 h2 {
@@ -70,5 +76,11 @@ button {
 .page {
   max-width: 1000px;
   margin: 0 auto;
-  padding: 32px 24px;
+  padding: 24px 16px;
+}
+
+@media (min-width: 768px) {
+  .page {
+    padding: 32px 24px;
+  }
 }
