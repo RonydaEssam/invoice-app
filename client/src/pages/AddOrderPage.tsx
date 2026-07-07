@@ -74,7 +74,7 @@ function AddOrderPage() {
             newErrors.selectedClientId = 'A client must be selected'
             hasError = true
         }
-        if (!currentServiceId) {
+        if (!currentServiceId && orderItems.length < 1) {
             newErrors.currentServiceId = 'A service must be selected'
             hasError = true
         }
