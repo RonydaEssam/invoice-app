@@ -45,7 +45,7 @@ function AddClientPage() {
     useEffect(() => {
         if (!id) return;
 
-        fetch(`${URL}/${Number(id)}`)
+        fetch(`${URL}/clients/${Number(id)}`)
             .then(response => response.json())
             .then(data => {
                 setName(data.name);
