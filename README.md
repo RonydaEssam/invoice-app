@@ -4,7 +4,7 @@ A full-stack invoice management web app for solo service providers — manage cl
 
 ## Live Demo
 
-[Invoice Generator](https://invoice-app-lilac-theta.vercel.app)
+[Invoice Generator](https://invoice-app-21j.pages.dev/clients)
 
 ## Overview
 
