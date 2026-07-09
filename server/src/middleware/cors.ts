@@ -3,7 +3,7 @@ import cors from "cors";
 const corsMiddleware = cors({
     origin: [
         'http://localhost:5173',
-        'https://invoice-app-lilac-theta.vercel.app'
+        'https://invoice-app-21j.pages.dev'
     ]
 });
 
