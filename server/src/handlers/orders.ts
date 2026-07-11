@@ -11,6 +11,7 @@ const getAllOrders = async (req: Request, res: Response) => {
             where: status ? { status: status as Status } : {},
             include: {
                 client: true,
+                invoice: true,
                 orderItems: {
                     include: { service: true }
                 }
@@ -86,6 +87,13 @@ const updateOrder = async (req: Request, res: Response) => {
 
         if (!order) {
             return res.status(404).json({ error: 'ordernot found' });
+        }
+
+        const invoice = await prisma.invoice.findUnique({ where: { orderId: id } })
+        if (invoice) {
+            return res.status(409).json({
+                error: 'Cannot edit an order that already has an invoice. Delete the invoice first.'
+            })
         }
 
         const updatedOrder = await prisma.order.update({
