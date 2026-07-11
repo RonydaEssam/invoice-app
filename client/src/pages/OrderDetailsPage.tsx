@@ -38,7 +38,9 @@ function OrderDetailsPage() {
             <div className="list-header">
                 <h1>Order Details</h1>
                 <div className="card-actions">
-                    <Link to={`/orders/edit/${Number(id)}`} className="btn-edit">Edit Order</Link>
+                    {!order?.invoice && (
+                        <Link to={`/orders/edit/${Number(id)}`} className="btn-edit">Edit Order</Link>
+                    )}
                     <button onClick={() => handleDeleteClick(Number(id))} className="btn-delete">delete</button>
                 </div>
             </div>

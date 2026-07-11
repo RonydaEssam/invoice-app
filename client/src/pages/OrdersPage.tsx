@@ -39,7 +39,9 @@ function OrdersPage() {
 
                                 <div className="card-actions">
                                     <Link to={`/orders/${order.id}`} className="btn-edit">View details</Link>
-                                    <button className="btn-edit" onClick={() => navigate(`edit/${order.id}`)}>edit</button>
+                                    {!order.invoice && (
+                                        <button className="btn-edit" onClick={() => navigate(`edit/${order.id}`)}>edit</button>
+                                    )}
                                     <button className="btn-delete" onClick={() => handleDeleteClick(order.id)}>delete</button>
                                 </div>
 
