@@ -25,6 +25,7 @@ function OrderDetailsPage() {
     )
 
     function createInvoice() {
+        submitData("orders", "PUT", { status: 'Closed' }, Number(id))
         submitData("invoices", "POST", { orderId: Number(id) })
             .then(() => refetch())
     }
