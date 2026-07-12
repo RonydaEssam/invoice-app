@@ -9,6 +9,7 @@ import { API_URL } from "../api/config";
 const URL = API_URL;
 
 interface OrderItemInput {
+    id?: number
     serviceId: number
     quantity: number
 }
@@ -27,6 +28,9 @@ function AddOrderPage() {
     const [errors, setErrors] = useState({
         selectedClientId: '', currentServiceId: '', currentQuantity: '', orderStatus: '', orderItems: ''
     });
+
+    const [originalItemIds, setOriginalItemIds] = useState<number[]>([])
+    const [clientName, setClientName] = useState('')
 
     const navigate = useNavigate();
 
@@ -49,8 +53,10 @@ function AddOrderPage() {
             .then(response => response.json())
             .then(data => {
                 setSelectedClientId(data.clientId)
+                setClientName(data.client.name)
                 setOrderItems(data.orderItems)
                 setOrderStatus(data.status)
+                setOriginalItemIds(data.orderItems.map((item: any) => item.id))
             })
     }
         , [id]
@@ -91,9 +97,19 @@ function AddOrderPage() {
         setErrors(newErrors)
         if (hasError) return
 
-        const data = {
+        const cleanItems = orderItems.map(item => ({
+            serviceId: item.serviceId,
+            quantity: item.quantity
+        }))
+
+        const data = id ? {
             clientId: selectedClientId,
-            orderItems: orderItems,
+            status: orderStatus,
+            deleteItemsById: originalItemIds,
+            newItems: cleanItems
+        } : {
+            clientId: selectedClientId,
+            orderItems: cleanItems,
             status: orderStatus
         }
 
@@ -107,21 +123,25 @@ function AddOrderPage() {
 
             <div className="form-field">
                 <label htmlFor="client">Client</label>
-                <select
-                    id="client"
-                    value={selectedClientId}
-                    className={errors.selectedClientId ? 'input-error' : ''}
-                    onChange={(e) => {
-                        setSelectedClientId(Number(e.target.value))
-                        setErrors(prev => ({ ...prev, selectedClientId: '' }))
-                    }}>
-                    <option value=''>Select a client</option>
-                    {clients.map(client => (
-                        <option key={client.id} value={client.id}>
-                            {client.name}
-                        </option>
-                    ))}
-                </select>
+                {id ? (
+                    <p className="details-value">{clientName}</p>
+                ) : (
+                    <select
+                        id="client"
+                        value={selectedClientId}
+                        className={errors.selectedClientId ? 'input-error' : ''}
+                        onChange={(e) => {
+                            setSelectedClientId(Number(e.target.value))
+                            setErrors(prev => ({ ...prev, selectedClientId: '' }))
+                        }}>
+                        <option value=''>Select a client</option>
+                        {clients.map(client => (
+                            <option key={client.id} value={client.id}>
+                                {client.name}
+                            </option>
+                        ))}
+                    </select>
+                )}
                 {errors.selectedClientId && <p className="field-error">{errors.selectedClientId}</p>}
             </div>
 
