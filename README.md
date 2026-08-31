@@ -143,9 +143,9 @@ Include the returned token on all subsequent requests: `Authorization: Bearer <t
 - Loading and empty states throughout
 - Reusable custom hooks (useFetch, useConfirmDelete)
 
-## FlyRank Capstone - Your 10x Solution
+## FlyRank Capstone - My 10x Solution
 
-This project is submitted as the **Your 10x Solution** capstone for the FlyRank Backend Track internship.
+This project is submitted as the **My 10x Solution** capstone for the FlyRank Backend Track internship.
 
 **Problem & full writeup:** see `My 10x Solution - Ronyda Essam.md` in this repo.
 
