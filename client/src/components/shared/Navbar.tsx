@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import './Navbar.css'
 import { useTheme } from "../../context/ThemeContext";
 import { useState } from "react";
@@ -6,6 +6,9 @@ import { useState } from "react";
 function Navbar() {
     const { theme, toggleTheme } = useTheme();
     const [menuOpen, setMenuOpen] = useState(false);
+    const navigate = useNavigate();
+
+    const handleSignOut = () => { localStorage.removeItem("token"); navigate("/login"); };
 
     return (
         <nav className="navbar">
@@ -23,6 +26,8 @@ function Navbar() {
                 <Link className="navbar-link" to={'/services'} onClick={() => setMenuOpen(false)}>Services</Link>
                 <Link className="navbar-link" to={'/orders'} onClick={() => setMenuOpen(false)}>Orders</Link>
                 <Link className="navbar-link" to={'/invoices'} onClick={() => setMenuOpen(false)}>Invoices</Link>
+
+                <button className="navbar-signout" onClick={handleSignOut}>Sign Out</button>
             </div>
 
             <label className="theme-switch">

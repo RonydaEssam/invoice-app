@@ -157,3 +157,24 @@
 .theme-switch input:checked+.theme-switch-track .theme-switch-thumb {
     transform: translateX(20px);
 }
+
+.navbar-signout {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 6px 0;
+    margin-left: 12px;
+
+    background: var(--color-surface);
+    color: var(--color-text-muted);
+
+    border: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.navbar-signout:hover {
+    transform: translateY(-1px);
+    color: var(--color-danger);
+}
