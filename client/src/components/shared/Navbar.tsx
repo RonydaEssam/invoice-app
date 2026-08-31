@@ -2,13 +2,14 @@ import { Link, useNavigate } from "react-router-dom";
 import './Navbar.css'
 import { useTheme } from "../../context/ThemeContext";
 import { useState } from "react";
+import { logout } from "../../api/authClient";
 
 function Navbar() {
     const { theme, toggleTheme } = useTheme();
     const [menuOpen, setMenuOpen] = useState(false);
     const navigate = useNavigate();
 
-    const handleSignOut = () => { localStorage.removeItem("token"); navigate("/login"); };
+    const handleSignOut = () => { logout(); navigate("/login"); };
 
     return (
         <nav className="navbar">
