@@ -5,11 +5,46 @@ import '../components/shared/styles/DetailsPage.css';
 import { useConfirmDelete } from '../hooks/useConfirmDelete';
 import ConfirmModal from '../components/shared/ConfirmModal';
 import { useFetch } from '../hooks/useFetch';
+import { useState } from 'react';
+import { API_URL } from '../api/config';
+import { getToken } from '../api/authClient';
 
 function InvoiceDetailsPage() {
     const { id } = useParams();
     const navigate = useNavigate();
     const { data: invoice, isLoading, error } = useFetch<Invoice>(`invoices/${Number(id)}`)
+    const [pdfError, setPdfError] = useState<string | null>(null);
+    const [isDownloading, setIsDownloading] = useState(false);
+
+    async function handleDownloadPdf() {
+        setPdfError(null);
+        setIsDownloading(true);
+        try {
+            const token = getToken();
+            const response = await fetch(`${API_URL}/invoices/${id}/pdf`, {
+                headers: token ? { Authorization: `Bearer ${token}` } : {},
+            });
+
+            if (!response.ok) {
+                const data = await response.json().catch(() => ({}));
+                throw new Error(data.error || 'Could not generate the PDF');
+            }
+
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `invoice-${id}.pdf`;
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            window.URL.revokeObjectURL(url);
+        } catch (err) {
+            setPdfError(err instanceof Error ? err.message : 'Could not generate the PDF');
+        } finally {
+            setIsDownloading(false);
+        }
+    }
 
     const totalPrice = invoice?.order.orderItems.reduce(
         (sum, item) => sum + item.quantity * item.service.price, 0
@@ -27,8 +62,15 @@ function InvoiceDetailsPage() {
         <div>
             <div className="list-header">
                 <h1>Invoice Details</h1>
-                <button className='btn-delete' onClick={() => handleDeleteClick(Number(id))}>delete</button>
+                <div style={{ display: 'flex', gap: '8px' }}>
+                    <button className='btn-edit' onClick={handleDownloadPdf} disabled={isDownloading}>
+                        {isDownloading ? 'Generating...' : 'Download PDF'}
+                    </button>
+                    <button className='btn-delete' onClick={() => handleDeleteClick(Number(id))}>delete</button>
+                </div>
             </div>
+
+            {pdfError && <p style={{ color: 'red' }}>{pdfError}</p>}
 
             <div className='details-section'>
                 <p className="details-section-title">Invoice #{invoice?.id}</p>
