@@ -5,7 +5,7 @@ interface FormInputProps {
     value: string | number,
     onChange: (event: React.ChangeEvent<HTMLInputElement>) => void,
     label: string,
-    type: 'text' | 'email' | 'number',
+    type: 'text' | 'email' | 'number' | 'password',
     name: string
     error?: string
 }

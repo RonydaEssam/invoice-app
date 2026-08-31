@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { API_URL } from "../api/config";
+import { getToken } from "../api/authClient";
 
 export function useFetch<T>(handle: string) {
     const [data, setData] = useState<T | null>(null);
@@ -10,7 +11,11 @@ export function useFetch<T>(handle: string) {
     const url = `${API_URL}/${handle}`
 
     useEffect(() => {
-        fetch(url)
+        const token = getToken();
+
+        fetch(url, {
+            headers: token ? { Authorization: `Bearer ${token}` } : {},
+        })
             .then(response => response.json())
             .then(data => {
                 setData(data)
